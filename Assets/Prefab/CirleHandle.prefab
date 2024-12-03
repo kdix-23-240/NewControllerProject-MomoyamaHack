@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 2778651705668939919}
   - component: {fileID: 7975750401317548110}
   - component: {fileID: 2364726725238816267}
+  - component: {fileID: 7848981979219877781}
   m_Layer: 0
   m_Name: CirleHandle
   m_TagString: Untagged
@@ -349,6 +350,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb42a19ba43fb40e49566d0b4662449c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7848981979219877781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537536755173277069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4dda85b4f914b538c37a460d228b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 0.3
 --- !u!1 &8770336944187139863
 GameObject:
   m_ObjectHideFlags: 0

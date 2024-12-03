@@ -19,19 +19,19 @@ public class PlayerMove : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.W))
         {
-            transform.position += new Vector3(0, moveSpeed, 0);
+            transform.Translate(Vector3.up * moveSpeed);
         }
         if(Input.GetKey(KeyCode.S))
         {
-            transform.position += new Vector3(0, -moveSpeed, 0);
+            transform.Translate(Vector3.down * moveSpeed);
         }
         if(Input.GetKey(KeyCode.A))
         {
-            transform.position += new Vector3(-moveSpeed, 0, 0);
+            transform.Translate(Vector3.left * moveSpeed);
         }
         if(Input.GetKey(KeyCode.D))
         {
-            transform.position += new Vector3(moveSpeed, 0, 0);
+            transform.Translate(Vector3.right * moveSpeed);
         }
     }
 }

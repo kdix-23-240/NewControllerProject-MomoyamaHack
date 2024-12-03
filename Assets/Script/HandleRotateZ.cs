@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRatate : MonoBehaviour
+public class PlayerRotateZ : MonoBehaviour
 {
-    [SerializeField, Header ("持ち手の回転スピード")] private float rotateSpeed = 0.1f;
+    [SerializeField, Header("z軸の回転スピード")] private float rotateSpeed = 0.1f;
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -19,11 +19,11 @@ public class PlayerRatate : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Rotate(new Vector3(rotateSpeed, 0, 0));
+            transform.Rotate(new Vector3(0, rotateSpeed, 0));
         }
         if(Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Rotate(new Vector3(-rotateSpeed, 0, 0));
+            transform.Rotate(new Vector3(0, -rotateSpeed, 0));
         }
     }
 }
