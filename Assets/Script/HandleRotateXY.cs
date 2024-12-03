@@ -29,11 +29,11 @@ public class HandleRotateXY : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.Rotate(new Vector3(0, rotateSpeed, 0));
+            transform.Rotate(new Vector3(0, -rotateSpeed, 0));
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.Rotate(new Vector3(0, -rotateSpeed, 0));
+            transform.Rotate(new Vector3(0, rotateSpeed, 0));
         }
     }
 }
