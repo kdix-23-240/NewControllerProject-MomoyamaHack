@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandleRotateXY : MonoBehaviour
+public class HandleRotateX : MonoBehaviour
 {
     [SerializeField, Header("持ち手の回転スピード")] private float rotateSpeed = 0.1f;
     void Start()
@@ -25,15 +25,6 @@ public class HandleRotateXY : MonoBehaviour
                 return;
             }
             transform.Rotate(new Vector3(rotateSpeed, 0, 0));
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.Rotate(new Vector3(0, -rotateSpeed, 0));
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            transform.Rotate(new Vector3(0, rotateSpeed, 0));
         }
     }
 }

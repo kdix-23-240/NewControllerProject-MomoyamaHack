@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7668220445128044025}
   - component: {fileID: 4091660379845818357}
-  - component: {fileID: 7459787799916008726}
+  - component: {fileID: 1427360974838221583}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.001
---- !u!114 &7459787799916008726
+--- !u!114 &1427360974838221583
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6787402493967024777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd89f36f961ac42f4be7aebcf839a98f, type: 3}
+  m_Script: {fileID: 11500000, guid: 50370217ae55242dea982d62742f4c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 0.3
@@ -205,11 +205,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7848981979219877781, guid: fa28fa7178eae4318860fbf108ae0843, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 537536755173277069, guid: fa28fa7178eae4318860fbf108ae0843, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7606565061016942197}
   m_SourcePrefab: {fileID: 100100000, guid: fa28fa7178eae4318860fbf108ae0843, type: 3}
+--- !u!1 &4973386448790298780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 537536755173277069, guid: fa28fa7178eae4318860fbf108ae0843, type: 3}
+  m_PrefabInstance: {fileID: 4787522618187226385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7606565061016942197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973386448790298780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436855799e4f14148a38e45dfaf56d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 0.3
 --- !u!4 &7277662472119299486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2778651705668939919, guid: fa28fa7178eae4318860fbf108ae0843, type: 3}
