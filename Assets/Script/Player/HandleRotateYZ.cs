@@ -12,7 +12,10 @@ public class PlayerRotateYZ : MonoBehaviour
 
     void Update()
     {
-        RotateHandle();
+        if(GameSystem.Instance.GetCanRotate())
+        {
+            RotateHandle();
+        }
     }
 
     private void RotateHandle()

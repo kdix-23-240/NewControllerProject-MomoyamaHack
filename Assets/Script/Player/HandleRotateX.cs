@@ -12,11 +12,15 @@ public class HandleRotateX : MonoBehaviour
 
     void Update()
     {
-        RotateHandle();
+        if(GameSystem.Instance.GetCanRotate())
+        {
+            RotateHandle();
+        }
     }
 
     private void RotateHandle()
     {
+        
         if (Input.GetKey(KeyCode.Return))
         {
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))

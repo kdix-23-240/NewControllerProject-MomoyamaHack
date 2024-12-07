@@ -7,8 +7,7 @@ public class HandleCollision : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // 衝突したオブジェクトの名前をログに表示
-        // if(collision.gameObject.tag == "Stick")
-            // Debug.Log($"{gameObject.name} collided with {collision.gameObject.name}");
+        if(collision.gameObject.tag == "Stick")
             Debug.LogError($"{gameObject.name} collided with {collision.gameObject.name}");
     }
 }

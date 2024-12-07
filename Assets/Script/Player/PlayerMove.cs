@@ -12,7 +12,10 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        MoveHandle();
+        if(GameSystem.Instance.GetCanMove())
+        {
+            MoveHandle();
+        }
     }
 
     private void MoveHandle()
