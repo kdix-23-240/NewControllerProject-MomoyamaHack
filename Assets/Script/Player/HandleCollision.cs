@@ -8,6 +8,8 @@ public class HandleCollision : MonoBehaviour
     {
         // 衝突したオブジェクトの名前をログに表示
         if(collision.gameObject.tag == "Stick")
-            Debug.LogError($"{gameObject.name} collided with {collision.gameObject.name}");
+        {
+            
+        }
     }
 }

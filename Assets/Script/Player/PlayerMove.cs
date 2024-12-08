@@ -37,4 +37,28 @@ public class PlayerMove : MonoBehaviour
             transform.Translate(Vector3.right * moveSpeed);
         }
     }
+
+    public float playerPositionX
+    {
+        get
+        {
+            return transform.position.x;
+        }
+    }
+
+    public float playerPositionY
+    {
+        get
+        {
+            return transform.position.y;
+        }
+    }
+
+    public float playerPositionZ
+    {
+        get
+        {
+            return transform.position.z;
+        }
+    }
 }

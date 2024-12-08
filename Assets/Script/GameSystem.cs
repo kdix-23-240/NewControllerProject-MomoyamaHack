@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSystem{
+public class GameSystem
+{
     private static GameSystem instance = null;
     private bool canMove = true;
     private bool canRotate = true;

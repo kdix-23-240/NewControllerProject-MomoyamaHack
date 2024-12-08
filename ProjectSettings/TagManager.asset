@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stick
   - Handle
+  - PlayerCamera
   layers:
   - Default
   - TransparentFX
