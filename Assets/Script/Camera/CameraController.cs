@@ -24,13 +24,15 @@ public class CameraController : MonoBehaviour
     public void ZoomIn()
     {
         RegisterCameraPosition();
-        transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (++clickCount * 0.005f));
+        if(clickCount < 20)//ZoomIn限界(0は初期位置)
+            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (++clickCount * 0.005f));
     }
 
     public void ZoomOut()
     {
         RegisterCameraPosition();
-        transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (--clickCount * 0.005f));
+        if(clickCount > -60)//ZoomOut限界
+            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (--clickCount * 0.005f));
     }
 
     public void Reset()
