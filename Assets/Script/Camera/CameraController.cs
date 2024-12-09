@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
         {
             transform.LookAt(transform.parent.position);
         }
-        DelayMove();
+        // DelayMove();
     }
 
     private void DelayMove()
@@ -47,6 +47,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイヤーが左に動いた時にカメラを右に動かす
+    /// </summary>
     private void DelayMovePlus()
     {
         newXPosition = transform.position.x + moveSpeed;
@@ -60,6 +63,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイヤーが右に動いた時にカメラを左に動かす
+    /// </summary>
     private void DelayMoveMinus()
     {
         newXPosition = transform.position.x - moveSpeed;

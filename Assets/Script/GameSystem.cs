@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ゲーム全体のシステムを管理するクラス
+/// シングルトン
+/// </summary>
 public class GameSystem
 {
     private static GameSystem instance = null;

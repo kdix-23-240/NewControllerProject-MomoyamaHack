@@ -18,6 +18,9 @@ public class HandleRotateX : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 持ち手をz軸回転させる(持ち手自体がすでに回転させてあるので軸が狂ってる)
+    /// </summary>
     private void RotateHandle()
     {
         

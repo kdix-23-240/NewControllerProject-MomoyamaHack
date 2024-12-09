@@ -18,6 +18,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 持ち手を移動させる
+    /// </summary>
     private void MoveHandle()
     {
         if(Input.GetKey(KeyCode.W))

@@ -18,6 +18,9 @@ public class PlayerRotateYZ : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 持ち手をyz軸に回転させる(持ち手自体がすでに回転させてあるので軸が狂ってる)
+    /// </summary>
     private void RotateHandle()
     {
         if (Input.GetKey(KeyCode.UpArrow))
