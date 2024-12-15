@@ -960,6 +960,8 @@ MonoBehaviour:
   rotationSpeedX: 0.1
   positionLimitX: 0.15
   rotationLimitX: 20
+  zoomInLimitCount: 150
+  zoomOutLimitCount: 150
 --- !u!4 &1268350055 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9179684578271473428, guid: cff8357b2db564470b45b0db20dc368b, type: 3}
@@ -1443,7 +1445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8294897750333456158, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.5
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 8294897750333456158, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: m_LocalRotation.w

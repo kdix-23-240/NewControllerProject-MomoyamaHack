@@ -7,10 +7,15 @@ public class CameraController : MonoBehaviour
     private float cameraPositionX = 0;
     private float cameraPositionY = 0;
     private float cameraPositionZ = 0;
+    private float parentPositionX = 0;
+    private float parentPositionY = 0;
+    private float parentPositionZ = 0;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotationSpeedX;
     [SerializeField] private float positionLimitX;
     [SerializeField] private float rotationLimitX;
+    [SerializeField] private float zoomInLimitCount;
+    [SerializeField] private float zoomOutLimitCount;
     private float newXPosition;
     private float newYRotation;
     private int clickCount = 0;
@@ -21,6 +26,10 @@ public class CameraController : MonoBehaviour
         cameraPositionX = transform.position.x;
         cameraPositionY = transform.position.y;
         cameraPositionZ = transform.position.z;
+
+        parentPositionX = transform.parent.position.x;
+        parentPositionY = transform.parent.position.y;
+        parentPositionZ = transform.parent.position.z;
     }
 
     void Update()
@@ -82,21 +91,27 @@ public class CameraController : MonoBehaviour
     public void ZoomIn()
     {
         RegisterCameraPosition();
-        if (clickCount < 20) // ZoomIn限界(0は初期位置)
-            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (++clickCount * 0.005f));
+        if (-zoomOutLimitCount <= clickCount && clickCount < zoomInLimitCount){
+            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + 0.001f);
+            clickCount++;
+        }
+        Debug.Log(clickCount);
     }
 
     public void ZoomOut()
     {
         RegisterCameraPosition();
-        if (clickCount > -60) // ZoomOut限界
-            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ + (--clickCount * 0.005f));
+        if (-zoomOutLimitCount < clickCount && clickCount <= zoomInLimitCount){
+            transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ - 0.001f);
+            clickCount--;
+        }
+        Debug.Log(clickCount);
     }
 
     public void Reset()
     {
-        RegisterCameraPosition();
-        transform.position = new Vector3(cameraPositionX, cameraPositionY, cameraPositionZ);
+        RegisterParentPosition();
+        transform.position = new Vector3(parentPositionX, parentPositionY + 0.1f, parentPositionZ - 0.6f);
         clickCount = 0;
     }
 
@@ -105,5 +120,12 @@ public class CameraController : MonoBehaviour
         cameraPositionX = transform.position.x;
         cameraPositionY = transform.position.y;
         cameraPositionZ = transform.position.z;
+    }
+
+    private void RegisterParentPosition()
+    {
+        parentPositionX = transform.parent.position.x;
+        parentPositionY = transform.parent.position.y;
+        parentPositionZ = transform.parent.position.z;
     }
 }
