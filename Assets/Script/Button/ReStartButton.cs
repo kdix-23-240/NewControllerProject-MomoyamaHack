@@ -13,6 +13,8 @@ public class ReStartButton : MonoBehaviour
     private void ReStart()
     {
         // シーンを再読み込み
+        GameSystem.Instance.SetCanRotate(true);
+        GameSystem.Instance.SetCanMove(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

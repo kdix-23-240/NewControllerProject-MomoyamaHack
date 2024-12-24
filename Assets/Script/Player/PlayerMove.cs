@@ -19,8 +19,8 @@ public class PlayerMove : MonoBehaviour
             MoveHandle();
         }
 
-        ConversionCircleHandleCoordinates();
-        ConversionPlayerPolarCoordinates();
+        // ConversionCircleHandleCoordinates();
+        // ConversionPlayerPolarCoordinates();
     }
 
     /// <summary>
