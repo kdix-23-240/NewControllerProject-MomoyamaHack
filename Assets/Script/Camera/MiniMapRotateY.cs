@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MiniMapRotateY : MonoBehaviour
 {
-    private float rotateSpeed = 0.1f;
+    private float rotateSpeed = 0.3f;
     void Start()
     {
 
@@ -12,7 +12,7 @@ public class MiniMapRotateY : MonoBehaviour
 
     void Update()
     {
-        if(GameSystem.Instance.GetCanRotate())
+        if (GameSystem.Instance.GetCanRotate())
         {
             RotateHandle();
         }
@@ -23,13 +23,13 @@ public class MiniMapRotateY : MonoBehaviour
     /// </summary>
     private void RotateHandle()
     {
-        if(Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            transform.Rotate(new Vector3(0, rotateSpeed, 0));
+            transform.RotateAround(transform.parent.position, Vector3.up, rotateSpeed);
         }
-        if(Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            transform.Rotate(new Vector3(0, -rotateSpeed, 0));
+            transform.RotateAround(transform.parent.position, Vector3.up, -rotateSpeed);
         }
     }
 }
