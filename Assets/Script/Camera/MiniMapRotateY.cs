@@ -5,6 +5,7 @@ using UnityEngine;
 public class MiniMapRotateY : MonoBehaviour
 {
     private float rotateSpeed = 0.3f;
+    [SerializeField] private Camera miniMapCamera;
     void Start()
     {
 
@@ -16,6 +17,7 @@ public class MiniMapRotateY : MonoBehaviour
         {
             RotateHandle();
         }
+        GazeStage();
     }
 
     /// <summary>
@@ -31,5 +33,12 @@ public class MiniMapRotateY : MonoBehaviour
         {
             transform.RotateAround(transform.parent.position, Vector3.up, -rotateSpeed);
         }
+    }
+
+    private void GazeStage()
+    {
+        miniMapCamera.transform.LookAt(transform.parent.position);
+        // 見ている方向に赤い線を表示
+        Debug.DrawRay(miniMapCamera.transform.position, miniMapCamera.transform.forward * 10, Color.red);
     }
 }

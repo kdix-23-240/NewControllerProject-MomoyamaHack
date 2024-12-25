@@ -28,6 +28,18 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void MoveHandle()
     {
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Translate(circleHandle.transform.up * moveSpeed);
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Translate(-circleHandle.transform.forward * moveSpeed);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.Translate((circleHandle.transform.forward) * moveSpeed);
+        }
         if (Input.GetKey(KeyCode.D))
         {
             transform.Translate((-circleHandle.transform.up) * moveSpeed);
