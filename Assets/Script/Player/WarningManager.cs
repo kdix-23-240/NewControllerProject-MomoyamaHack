@@ -48,6 +48,6 @@ public class WarningManager : MonoBehaviour
         {
             this.warningLevel = 5;
         }
-        // Debug.Log("warning:" + warningLevel);
+        Debug.Log("warning:" + warningLevel);
     }
 }

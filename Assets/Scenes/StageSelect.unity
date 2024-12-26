@@ -192,7 +192,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SampleStage2
+  m_Text: Stage01
 --- !u!222 &172578994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ed0418b9d544587b69c6ba97a6e4f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageName: SampleStage2
+  stageName: Stage01
 --- !u!114 &2128077633
 MonoBehaviour:
   m_ObjectHideFlags: 0
