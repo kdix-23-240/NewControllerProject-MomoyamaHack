@@ -29,23 +29,28 @@ public class WarningManager : MonoBehaviour
         {
             if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
             {
+                //グリコンに3を送る
                 this.warningLevel = 3;
             }
             else if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
             {
+                //グリコンに2を送る
                 this.warningLevel = 2;
             }
             else if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
             {
+                //グリコンに1を送る
                 this.warningLevel = 1;
             }
             else
             {
+                //グリコンに5を送る
                 this.warningLevel = 5;
             }
         }
         else
         {
+            //グリコンに5を送る
             this.warningLevel = 5;
         }
         Debug.Log("warning:" + warningLevel);

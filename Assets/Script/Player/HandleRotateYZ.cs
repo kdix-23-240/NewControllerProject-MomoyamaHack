@@ -7,7 +7,7 @@ public class PlayerRotateYZ : MonoBehaviour
     [SerializeField, Header("yz軸の回転スピード")] private float rotateSpeed = 0.1f;
     void Start()
     {
-
+        
     }
 
     void Update()

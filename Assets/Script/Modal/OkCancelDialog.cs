@@ -27,5 +27,7 @@ public class OkCancelDialog : MonoBehaviour
         // イベント通知先があれば通知してダイアログを破棄してしまう
         this.FixDialog?.Invoke(DialogResult.Cancel);
         Destroy(this.gameObject);
+        GameSystem.Instance.SetCanMove(true);
+        GameSystem.Instance.SetCanRotate(true);
     }
 }

@@ -8,28 +8,29 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private GameObject circleHandle;
     void Start()
     {
+
     }
 
     void Update()
-{
-    if (GameSystem.Instance.GetCanMove())
     {
-        MoveHandle();
+        if (GameSystem.Instance.GetCanMove())
+        {
+            MoveHandle();
+        }
     }
-}
 
-/// <summary>
-/// 持ち手から見て右方向に持ち手を移動させる
-/// </summary>
-private void MoveHandle()
-{
-    Vector3 moveDirection = Vector3.zero;
-    if (Input.GetKey(KeyCode.D))
+    /// <summary>
+    /// 持ち手から見て右方向に持ち手を移動させる
+    /// </summary>
+    private void MoveHandle()
     {
-        moveDirection -= circleHandle.transform.up;
+        Vector3 moveDirection = Vector3.zero;
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveDirection -= circleHandle.transform.up;
+        }
+        transform.Translate(moveDirection.normalized * moveSpeed, Space.World);
     }
-    transform.Translate(moveDirection.normalized * moveSpeed, Space.World);
-}
 
     public float playerPositionX
     {
