@@ -39,6 +39,6 @@ public class MiniMapRotateY : MonoBehaviour
     {
         miniMapCamera.transform.LookAt(transform.parent.position);
         // 見ている方向に赤い線を表示
-        Debug.DrawRay(miniMapCamera.transform.position, miniMapCamera.transform.forward * 10, Color.red);
+        // Debug.DrawRay(miniMapCamera.transform.position, miniMapCamera.transform.forward * 10, Color.red);
     }
 }

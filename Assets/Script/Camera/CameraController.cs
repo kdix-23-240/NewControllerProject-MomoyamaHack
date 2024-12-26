@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// カメラの操作を制御する
+/// プレイヤーカメラのズームイン、ズームアウト、リセットを行う
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     private float cameraPositionX = 0;
@@ -115,6 +119,9 @@ public class CameraController : MonoBehaviour
         clickCount = 0;
     }
 
+    /// <summary>
+    /// カメラのその瞬間の位置を登録する
+    /// </summary>
     private void RegisterCameraPosition()
     {
         cameraPositionX = transform.position.x;
@@ -122,6 +129,9 @@ public class CameraController : MonoBehaviour
         cameraPositionZ = transform.position.z;
     }
 
+    /// <summary>
+    /// 親オブジェクトのその瞬間の位置を登録する
+    /// </summary>
     private void RegisterParentPosition()
     {
         parentPositionX = transform.parent.position.x;

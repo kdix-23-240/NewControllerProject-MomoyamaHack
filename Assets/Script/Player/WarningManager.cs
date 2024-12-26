@@ -14,6 +14,12 @@ public class WarningManager : MonoBehaviour
         ObserveWarningLevel();
     }
 
+    /// <summary>
+    /// 警告レベルを観察する
+    /// 各警告オブジェクトの侵入判定を監視し、どれかに侵入した場合、警告レベルを設定する
+    /// 侵入していない場合は、警告レベルを5に設定する
+    /// </summary>
+
     private void ObserveWarningLevel()
     {
         var outSideWarningComponent = outSideWarning.GetComponent<HandleOutSideWarning>();
@@ -42,7 +48,6 @@ public class WarningManager : MonoBehaviour
         {
             this.warningLevel = 5;
         }
-
-        Debug.Log("warning:" + warningLevel);
+        // Debug.Log("warning:" + warningLevel);
     }
 }

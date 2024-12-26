@@ -8,12 +8,19 @@ public class HandleCollision : MonoBehaviour
     [SerializeField] private Canvas parent = default;
     [SerializeField] private GameObject biribiriModal = default;
     [SerializeField] private GameObject goalModal = default;
+    
+    /// <summary>
+    /// 衝突判定
+    /// 衝突したオブジェクトが棒ならば、ゲームオーバー
+    /// 衝突したオブジェクトがゴールならば、ゴール
+    /// </summary>
+    /// <param name="collision"></param>
     void OnCollisionEnter(Collision collision)
     {
         // 衝突したオブジェクトの名前をログに表示
         if (collision.gameObject.tag == "Stick")
         {
-            Debug.Log("Stick");
+            // Debug.Log("Stick");
             GameSystem.Instance.SetCanRotate(false);
             GameSystem.Instance.SetCanMove(false);
             //BiribiriModalプレハブをCanvasの子要素として生成
@@ -22,7 +29,7 @@ public class HandleCollision : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Goal")
         {
-            Debug.Log("Goal");
+            // Debug.Log("Goal");
             GameSystem.Instance.SetCanRotate(false);
             GameSystem.Instance.SetCanMove(false);
             //BiribiriModalプレハブをCanvasの子要素として生成

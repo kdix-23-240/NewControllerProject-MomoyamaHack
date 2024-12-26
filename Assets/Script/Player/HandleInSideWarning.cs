@@ -5,6 +5,12 @@ using UnityEngine;
 public class HandleInSideWarning : MonoBehaviour
 {
     private bool isHit = false;
+
+    /// <summary>
+    /// 侵入判定
+    /// 衝突したオブジェクトが棒ならば、isHitをtrueにして警告を表示 
+    /// </summary>
+    /// <param name="collision"></param>
     void OnTriggerEnter(Collider collision)
     {
         // 衝突したオブジェクトの名前をログに表示
@@ -13,6 +19,12 @@ public class HandleInSideWarning : MonoBehaviour
             isHit = true;
         }
     }
+
+    /// <summary>
+    /// 侵入判定
+    /// 侵入が終わったオブジェクトが棒ならば、isHitをfalseにして警告を非表示
+    /// </summary>
+    /// <param name="collision"></param>
 
     void OnTriggerExit(Collider collision)
     {
