@@ -13,38 +13,42 @@ public class PlayerMove : MonoBehaviour
     }
 
     void Update()
+{
+    if (GameSystem.Instance.GetCanMove())
     {
-        if (GameSystem.Instance.GetCanMove())
-        {
-            MoveHandle();
-        }
-
-        // ConversionCircleHandleCoordinates();
-        // ConversionPlayerPolarCoordinates();
+        MoveHandle();
     }
 
-    /// <summary>
-    /// 持ち手を移動させる
-    /// </summary>
-    private void MoveHandle()
+    // ConversionCircleHandleCoordinates();
+    // ConversionPlayerPolarCoordinates();
+}
+
+/// <summary>
+/// 持ち手を移動させる
+/// </summary>
+private void MoveHandle()
+{
+    Vector3 moveDirection = Vector3.zero;
+
+    // if (Input.GetKey(KeyCode.A))
+    // {
+    //     moveDirection += -circleHandle.transform.right;
+    // }
+    if (Input.GetKey(KeyCode.D))
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(circleHandle.transform.up * moveSpeed);
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(-circleHandle.transform.forward * moveSpeed);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate((circleHandle.transform.forward) * moveSpeed);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate((-circleHandle.transform.up) * moveSpeed);
-        }
+        moveDirection -= circleHandle.transform.up;
     }
+    // if (Input.GetKey(KeyCode.W))
+    // {
+    //     moveDirection += circleHandle.transform.forward;
+    // }
+    // if (Input.GetKey(KeyCode.S))
+    // {
+    //     moveDirection += -circleHandle.transform.forward;
+    // }
+
+    transform.Translate(moveDirection.normalized * moveSpeed, Space.World);
+}
 
     public float playerPositionX
     {
