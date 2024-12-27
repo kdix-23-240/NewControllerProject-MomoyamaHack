@@ -11,6 +11,7 @@ public class GameSystem
     private static GameSystem instance = null;
     private bool canMove = true;
     private bool canRotate = true;
+    public static bool isReset = false;
 
     public static float clearTime = 0;
 

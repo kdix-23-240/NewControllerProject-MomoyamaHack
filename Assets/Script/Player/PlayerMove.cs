@@ -6,6 +6,9 @@ public class PlayerMove : MonoBehaviour
 {
     [SerializeField, Header("持ち手の移動スピード")] private float moveSpeed = 0.1f;
     [SerializeField] private GameObject circleHandle;
+    [SerializeField] private float firstPlayerPositionX;
+    [SerializeField] private float firstPlayerPositionY;
+    [SerializeField] private float firstPlayerPositionZ;
     void Start()
     {
 
@@ -16,6 +19,10 @@ public class PlayerMove : MonoBehaviour
         if (GameSystem.Instance.GetCanMove())
         {
             MoveHandle();
+        }
+        if(GameSystem.isReset)
+        {
+            ResetPlayerPosition();
         }
     }
 
@@ -54,5 +61,14 @@ public class PlayerMove : MonoBehaviour
         {
             return transform.position.z;
         }
+    }
+
+    /// <summary>
+    /// プレイヤーの位置を初期位置(0,0,0)に戻す
+    /// </summary>
+    public void ResetPlayerPosition()
+    {
+        transform.position = new Vector3(firstPlayerPositionX, firstPlayerPositionY, firstPlayerPositionZ);
+        GameSystem.isReset = false;
     }
 }
