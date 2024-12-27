@@ -537,6 +537,23 @@ Transform:
   - {fileID: 342663921}
   m_Father: {fileID: 1882755652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &684635332 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6787402493967024777, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+  m_PrefabInstance: {fileID: 1148878733861617889}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &684635333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684635332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820ef773645d34044895182e5392c888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +822,10 @@ PrefabInstance:
     - target: {fileID: 7011797071977380596, guid: 0a3ae4bd8c5ce47b69715d43273825b4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7774972681907353408, guid: 0a3ae4bd8c5ce47b69715d43273825b4, type: 3}
+      propertyPath: m_Size.y
+      value: 0.035
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1699,7 +1720,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6787402493967024777, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 684635333}
   m_SourcePrefab: {fileID: 100100000, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
 --- !u!1001 &3271827268359812458
 PrefabInstance:
@@ -1898,6 +1922,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5864181890732038812, guid: 8bd56440e5e4a4c8ca9fa7c3a5428959, type: 3}
       propertyPath: m_Name
+      value: Stick
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864181890732038812, guid: 8bd56440e5e4a4c8ca9fa7c3a5428959, type: 3}
+      propertyPath: m_TagString
       value: Stick
       objectReference: {fileID: 0}
     m_RemovedComponents: []

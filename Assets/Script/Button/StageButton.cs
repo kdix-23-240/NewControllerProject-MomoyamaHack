@@ -10,7 +10,6 @@ public class StageButton : MonoBehaviour
     {
         Stage();
     }
-
     private void Stage()
     {
         // シーンを再読み込み

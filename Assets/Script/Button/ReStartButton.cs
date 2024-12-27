@@ -16,5 +16,6 @@ public class ReStartButton : MonoBehaviour
         GameSystem.Instance.SetCanRotate(true);
         GameSystem.Instance.SetCanMove(true);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        GameSystem.clearTime = 0;
     }
 }

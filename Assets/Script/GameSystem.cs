@@ -12,6 +12,8 @@ public class GameSystem
     private bool canMove = true;
     private bool canRotate = true;
 
+    public static float clearTime = 0;
+
 
     private GameSystem()
     {
