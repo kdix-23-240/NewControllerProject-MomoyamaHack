@@ -1,7 +1,7 @@
 # Gricon_Game-s_Code
 2024/12/27に桃山大学テック部主催で開催されたハッカソンに出した作品Griconのゲーム側のプログラム（2024/12/28 時点）
 
-ゲーム側のプログラム↓
+コントローラ側のプログラム↓
 
 https://github.com/naka6ryo/Gricon_Controller-s_Code/tree/main
 
