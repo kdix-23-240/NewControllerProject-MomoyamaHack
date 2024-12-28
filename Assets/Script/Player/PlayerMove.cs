@@ -32,6 +32,18 @@ public class PlayerMove : MonoBehaviour
     private void MoveHandle()
     {
         Vector3 moveDirection = Vector3.zero;
+        if (Input.GetKey(KeyCode.W))
+        {
+            moveDirection -= circleHandle.transform.forward;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            moveDirection += circleHandle.transform.forward;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveDirection += circleHandle.transform.up;
+        }
         if (Input.GetKey(KeyCode.D))
         {
             moveDirection -= circleHandle.transform.up;
@@ -65,10 +77,14 @@ public class PlayerMove : MonoBehaviour
 
     /// <summary>
     /// プレイヤーの位置を初期位置(0,0,0)に戻す
+    /// プレイヤーの傾きを初期位置(0,0,0)に戻す
+    /// ゲームオーバー時に使用
     /// </summary>
     public void ResetPlayerPosition()
     {
         transform.position = new Vector3(firstPlayerPositionX, firstPlayerPositionY, firstPlayerPositionZ);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
         GameSystem.isReset = false;
     }
 }
