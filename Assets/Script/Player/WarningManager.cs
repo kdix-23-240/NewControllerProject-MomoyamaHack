@@ -8,10 +8,16 @@ public class WarningManager : MonoBehaviour
     [SerializeField] private GameObject outSideWarning;
     [SerializeField] private GameObject middleWarning;
     [SerializeField] private GameObject inSideWarning;
+    private Get_Information info;
 
     void Update()
     {
         ObserveWarningLevel();
+    }
+
+    void Start()
+    {
+        this.info = new Get_Information();
     }
 
     /// <summary>
@@ -29,30 +35,30 @@ public class WarningManager : MonoBehaviour
         {
             if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
             {
-                //グリコンに3を送る
+                info.GetOutGoingMsg("3");
                 this.warningLevel = 3;
             }
             else if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
             {
-                //グリコンに2を送る
+                info.GetOutGoingMsg("3");
                 this.warningLevel = 2;
             }
             else if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
             {
-                //グリコンに1を送る
+                info.GetOutGoingMsg("1");
                 this.warningLevel = 1;
             }
             else
             {
-                //グリコンに5を送る
+                info.GetOutGoingMsg("5");
                 this.warningLevel = 5;
             }
         }
         else
         {
-            //グリコンに5を送る
+            info.GetOutGoingMsg("5");
             this.warningLevel = 5;
         }
-        Debug.Log("warning:" + warningLevel);
+        //Debug.Log("warning:" + warningLevel);
     }
 }
