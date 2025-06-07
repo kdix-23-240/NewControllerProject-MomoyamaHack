@@ -1,51 +1,94 @@
+// Unity用シリアル通信スクリプト（バイナリ通信 + COMポート選択 + 配列化対応）
+
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.IO.Ports;
 using System.Threading;
-using Unity.VisualScripting;
-using System;
-using UnityEngine.UIElements;
 
 public class Get_Information : MonoBehaviour
 {
-    public SerialPort serial = new SerialPort("COM8");
-    static string incomingMsg = " ";
-    public static string outgoingMsg = "5";
-    private string[] data = new string[4];
+    [Header("Serial Port Settings")]
+    public string portName = "COM9";   // インスペクターでCOMポート選択
+    public int baudRate = 9600;
+
+    private SerialPort serial;
+    private Thread readThread;
+    private volatile bool isRunning = false;
+
+    public float[] receivedData = new float[4]; // pitch, roll, yaw, bend
+
+    private const int messageSize = 14; // float*3 + int16 = 4*3 + 2 = 14 bytes
+    private byte[] buffer = new byte[messageSize];
 
     void Start()
     {
-        serial.Open();
-        serial.DtrEnable = true; //Configuramos control de datos por DTR.
-                                 // We configure data control by DTR.
-        serial.ReadTimeout = 10000;
-        serial.WriteTimeout = 10000;
+        serial = new SerialPort(portName, baudRate);
+        serial.ReadTimeout = 1000;
+        serial.WriteTimeout = 1000;
+        serial.DtrEnable = true;
 
-    }
-    void Update()
-    {
-        //print(serial.ReadLine());
-        //Debug.Log(incomingMsg);
-        incomingMsg = serial.ReadLine();
-        if (incomingMsg != " ")
+        try
         {
-            if (outgoingMsg != " ")
-            {
-                serial.WriteLine(outgoingMsg);
-                outgoingMsg = " ";
-            }
-            //Debug.Log("Out = " + outgoingMsg);
+            serial.Open();
+            isRunning = true;
+            readThread = new Thread(ReadSerialData);
+            readThread.Start();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to open serial port: " + e.Message);
         }
     }
 
-    public void GetOutGoingMsg(String Msg)
+    void OnDestroy()
     {
-        outgoingMsg = Msg;
+        isRunning = false;
+        if (readThread != null && readThread.IsAlive)
+            readThread.Join();
+
+        if (serial != null && serial.IsOpen)
+            serial.Close();
     }
 
-    public string Getinfo()
+    // バイナリ形式でデータ受信
+    private void ReadSerialData()
     {
-        return (incomingMsg);
+        while (isRunning)
+        {
+            try
+            {
+                if (serial.BytesToRead >= messageSize)
+                {
+                    serial.Read(buffer, 0, messageSize);
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        receivedData[i] = BitConverter.ToSingle(buffer, i * 4);
+                    }
+
+                    receivedData[3] = BitConverter.ToInt16(buffer, 12); // bend（int16として）
+                }
+            }
+            catch (TimeoutException) { }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Serial Read Error: " + e.Message);
+            }
+        }
+    }
+
+    // 外部スクリプトから送信メッセージを設定する
+    public void SetOutgoingByte(byte msg)
+    {
+        if (serial != null && serial.IsOpen)
+        {
+            serial.Write(new byte[] { msg }, 0, 1);
+        }
+    }
+
+    // 外部スクリプトが取得する用（リアルタイムなデータ配列）
+    public float[] GetReceivedData()
+    {
+        return receivedData;
     }
 }

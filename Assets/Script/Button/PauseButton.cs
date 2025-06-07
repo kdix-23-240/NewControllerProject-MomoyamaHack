@@ -5,64 +5,41 @@ using UnityEngine.UI;
 
 public class PauseButton : MonoBehaviour
 {
+    [SerializeField] private Canvas parent = default;         // ダイアログを載せるキャンバス
+    [SerializeField] private GameObject biribiriModal = default; // 表示するポーズモーダル
 
-    // ダイアログを追加する親のCanvas
-    [SerializeField] private Canvas parent = default;
-    [SerializeField] private GameObject biribiriModal = default;
-
-    private Get_Information info;
-    static string[] data = new string[5];
-    float baib = 0;
-    void Start()
-    {
-        this.info = new Get_Information();
-    }
+    private bool isPaused = false;
 
     void Update()
     {
-        if (CountText(",", info.Getinfo()) == 4)
+        // キー入力 or 他スクリプトからのフラグで Pause を呼び出す設計も可能
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            data = info.Getinfo().Split(',');
-            baib = int.Parse(data[4]);
+            OnClick(); // Pキー押下でポーズ切り替え
         }
-
-        if (baib == 1) OnClick();
-
     }
 
-    private int CountText(string search, string target)
-    {
-        int cnt = 0;
-        bool check = true;
-
-        while (check)
-        {
-            if (target.IndexOf(search, System.StringComparison.CurrentCulture) == -1)
-            {
-                check = false;
-            }
-            else
-            {
-                target = target.Remove(0, target.IndexOf(search, System.StringComparison.CurrentCulture) + 1);
-                cnt++;
-            }
-        }
-
-        return cnt;
-    }
-
+    /// <summary>
+    /// UIボタンや外部イベントから呼び出されるポーズ発火メソッド
+    /// </summary>
     public void OnClick()
     {
-        Pause();
+        if (!isPaused)
+        {
+            Pause();
+        }
     }
 
+    /// <summary>
+    /// ポーズ処理：ゲームシステムを停止し、UI表示
+    /// </summary>
     private void Pause()
     {
-        // シーンを再読み込み
         GameSystem.Instance.SetCanRotate(false);
         GameSystem.Instance.SetCanMove(false);
-        //BiribiriModalプレハブをCanvasの子要素として生成
-        var _dialog = Instantiate(biribiriModal) as GameObject;
+        var _dialog = Instantiate(biribiriModal);
         _dialog.transform.SetParent(parent.transform, false);
+
+        isPaused = true;
     }
 }
