@@ -1,5 +1,4 @@
-// Unity用シリアル通信スクリプト（バイナリ通信 + COMポート選択 + 配列化対応）
-
+// Unity用ヘッダー同期付き・整数角度対応シリアル受信スクリプト
 using UnityEngine;
 using System;
 using System.IO.Ports;
@@ -8,16 +7,16 @@ using System.Threading;
 public class Get_Information : MonoBehaviour
 {
     [Header("Serial Port Settings")]
-    public string portName = "COM9";   // インスペクターでCOMポート選択
+    public string portName = "COM9";
     public int baudRate = 9600;
 
     private SerialPort serial;
     private Thread readThread;
     private volatile bool isRunning = false;
 
-    public float[] receivedData = new float[4]; // pitch, roll, yaw, bend
+    public float[] receivedData = new float[4]; // pitch, roll, yaw, bend（角度はfloatとして返す）
 
-    private const int messageSize = 14; // float*3 + int16 = 4*3 + 2 = 14 bytes
+    private const int messageSize = 8; // int16 * 4
     private byte[] buffer = new byte[messageSize];
 
     void Start()
@@ -50,26 +49,33 @@ public class Get_Information : MonoBehaviour
             serial.Close();
     }
 
-    // バイナリ形式でデータ受信
+    // ヘッダー同期付き整数角度受信
     private void ReadSerialData()
     {
         while (isRunning)
         {
             try
             {
-                if (serial.BytesToRead >= messageSize)
+                while (serial.ReadByte() != 'S')
                 {
-                    serial.Read(buffer, 0, messageSize);
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        receivedData[i] = BitConverter.ToSingle(buffer, i * 4);
-                    }
-
-                    receivedData[3] = BitConverter.ToInt16(buffer, 12); // bend（int16として）
+                    if (!isRunning) return;
                 }
+
+                int bytesRead = 0;
+                while (bytesRead < messageSize)
+                {
+                    bytesRead += serial.Read(buffer, bytesRead, messageSize - bytesRead);
+                }
+
+                // int16_t → float変換（0.1度単位）
+                for (int i = 0; i < 3; i++)
+                {
+                    short raw = BitConverter.ToInt16(buffer, i * 2);
+                    receivedData[i] = raw / 10.0f;
+                }
+
+                receivedData[3] = BitConverter.ToInt16(buffer, 6); // bendはそのまま
             }
-            catch (TimeoutException) { }
             catch (Exception e)
             {
                 Debug.LogWarning("Serial Read Error: " + e.Message);
@@ -77,7 +83,6 @@ public class Get_Information : MonoBehaviour
         }
     }
 
-    // 外部スクリプトから送信メッセージを設定する
     public void SetOutgoingByte(byte msg)
     {
         if (serial != null && serial.IsOpen)
@@ -86,7 +91,6 @@ public class Get_Information : MonoBehaviour
         }
     }
 
-    // 外部スクリプトが取得する用（リアルタイムなデータ配列）
     public float[] GetReceivedData()
     {
         return receivedData;
