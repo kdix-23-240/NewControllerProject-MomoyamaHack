@@ -19,37 +19,42 @@ public class HandleCollision : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Stick")
+        if (collision.gameObject.CompareTag("Stick") || collision.gameObject.CompareTag("Goal"))
         {
-            Debug.Log("Collision with Stick detected!");
-
             GameSystem.Instance.SetCanRotate(false);
             GameSystem.Instance.SetCanMove(false);
 
-            var _dialog = Instantiate(biribiriModal);
-            _dialog.transform.SetParent(parent.transform, false);
+            // 回転スクリプトの停止
+            var rotateX = GetComponent<HandleRotateX>();
+            if (rotateX != null)
+            {
+                rotateX.canRotate = false;
+                Debug.Log("[HandleCollision] X回転停止");
+            }
 
-            if (delayManager != null)
+            // Player側の YZ回転を止める
+            var playerObj = transform.root; // または transform.parent
+            var rotateYZ = playerObj.GetComponent<HandleRotateYZ>();
+            if (rotateYZ != null)
+            {
+                rotateYZ.canRotate = false;
+                Debug.Log("[HandleCollision] YZ回転停止（Player経由）");
+            }
+
+
+            // モーダルの表示
+            GameObject dialogPrefab = collision.gameObject.CompareTag("Stick") ? biribiriModal : goalModal;
+            var dialog = Instantiate(dialogPrefab);
+            dialog.transform.SetParent(parent.transform, false);
+
+            // 衝突時の追加処理（Goalには不要）
+            if (collision.gameObject.CompareTag("Stick") && delayManager != null)
             {
                 Debug.Log("Calling Send4Then5()");
                 delayManager.Send4Then5();
-
-                // 👇ここで自動リセットを予約
-                StartCoroutine(ResetDelayAfter(5f)); // 5秒後に自動でhasSent5をリセット
+                StartCoroutine(ResetDelayAfter(5f));
+                Debug.Log("Game Over");
             }
-            else
-            {
-                Debug.LogError("delayManager is null!");
-            }
-
-            Debug.Log("Game Over");
-        }
-        else if (collision.gameObject.tag == "Goal")
-        {
-            GameSystem.Instance.SetCanRotate(false);
-            GameSystem.Instance.SetCanMove(false);
-            var _dialog = Instantiate(goalModal);
-            _dialog.transform.SetParent(parent.transform, false);
         }
     }
 

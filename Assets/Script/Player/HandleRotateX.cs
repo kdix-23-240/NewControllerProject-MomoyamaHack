@@ -12,6 +12,7 @@ public class HandleRotateX : MonoBehaviour
     private Get_Information info;
     float roll = 0;
     Transform myTransform;
+    public bool canRotate = true; // ← フラグ追加
 
     void Start()
     {
@@ -21,6 +22,8 @@ public class HandleRotateX : MonoBehaviour
 
     void Update()
     {
+        if (!canRotate) return; // ← フラグ判定を追加
+
         float[] data = info.GetReceivedData();
         roll = data[1]; // roll はインデックス1
 
@@ -34,3 +37,4 @@ public class HandleRotateX : MonoBehaviour
         myTransform.localEulerAngles = worldAngle;
     }
 }
+

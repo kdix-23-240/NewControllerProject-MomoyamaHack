@@ -7,12 +7,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-public class PlayerRotateYZ : MonoBehaviour
+public class HandleRotateYZ : MonoBehaviour
 {
     private Get_Information info;
     float pitch = 0;
     float yaw = 0;
     Transform myTransform;
+    public bool canRotate = true; // ← フラグ追加
 
     void Start()
     {
@@ -22,6 +23,8 @@ public class PlayerRotateYZ : MonoBehaviour
 
     void Update()
     {
+        if (!canRotate) return; // ← フラグ判定を追加
+
         float[] data = info.GetReceivedData();
         pitch = data[0]; // pitch
         yaw = data[2];   // yaw

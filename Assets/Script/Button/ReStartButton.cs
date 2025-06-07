@@ -1,40 +1,79 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ReStartButton : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject player; // CircleHandle をアサインする予定だが、念のため再取得する
 
     void Start()
     {
-        // 初期化が必要な場合はここに追加
+        // 確実に CircleHandle を取得して使う（Inspectorに設定されていても上書き）
+        GameObject circleHandle = GameObject.Find("CircleHandle");
+        if (circleHandle != null)
+        {
+            player = circleHandle;
+            Debug.Log("[診断] player を CircleHandle に上書き");
+        }
+        else
+        {
+            Debug.LogError("[ReStartButton] CircleHandle がシーン上に見つかりません！");
+        }
     }
 
-    void Update()
-    {
-        // baibzのチェックを完全に削除 → 自動リスタートなし
-    }
-
-    /// <summary>
-    /// UIボタンから呼び出される再スタート処理
-    /// </summary>
     public void OnClick()
     {
         ReStart();
     }
 
-    /// <summary>
-    /// プレイヤーを初期状態に戻す
-    /// </summary>
     private void ReStart()
     {
         GameSystem.Instance.SetCanRotate(true);
         GameSystem.Instance.SetCanMove(true);
-
-        Destroy(transform.parent.parent.gameObject); // ダイアログを閉じる
-
         GameSystem.isReset = true;
         GameSystem.clearTime = 0;
+
+        // ダイアログを閉じる
+        Destroy(transform.parent.parent.gameObject);
+
+        if (player == null)
+        {
+            Debug.LogError("[ReStartButton] player が null のままです");
+            return;
+        }
+
+        // Rigidbody の拘束解除（回転フリー、位置固定）
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.FreezePositionX |
+                             RigidbodyConstraints.FreezePositionY |
+                             RigidbodyConstraints.FreezePositionZ;
+
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            Debug.Log("Rigidbody 拘束解除");
+        }
+
+        // X回転スクリプトの復帰（CircleHandle にある）
+        var rotateX = player.GetComponent<HandleRotateX>();
+        if (rotateX != null)
+        {
+            rotateX.canRotate = true;
+        }
+        else
+        {
+            Debug.LogWarning("HandleRotateX が " + player.name + " に見つかりません");
+        }
+
+        // YZ回転スクリプトの復帰（親 Player にある）
+        var rotateYZ = player.transform.root.GetComponent<HandleRotateYZ>();
+        if (rotateYZ != null)
+        {
+            rotateYZ.canRotate = true;
+        }
+        else
+        {
+            Debug.LogWarning("HandleRotateYZ が Player に見つかりません");
+        }
     }
 }

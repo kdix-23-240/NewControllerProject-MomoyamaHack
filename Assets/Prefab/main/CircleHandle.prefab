@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 2364726725238816267}
   - component: {fileID: 7061954342486908320}
   m_Layer: 0
-  m_Name: CirleHandle
+  m_Name: CircleHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,6 +350,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb42a19ba43fb40e49566d0b4662449c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  biribiriModal: {fileID: 3392978752206617050, guid: 576a561992b884e2bac598f271aa7de9, type: 3}
+  goalModal: {fileID: 2057319747324003658, guid: e8a4adb94e182485abf1d645736c07e6, type: 3}
 --- !u!114 &7061954342486908320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 436855799e4f14148a38e45dfaf56d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 0.3
+  canRotate: 1
 --- !u!1 &8770336944187139863
 GameObject:
   m_ObjectHideFlags: 0

@@ -791,7 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 436855799e4f14148a38e45dfaf56d40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 0.3
+  canRotate: 1
 --- !u!1 &5082839920966543527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,8 +1626,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e45c00a788fbe4d4cb8d2e08529b626b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.001
   circleHandle: {fileID: 4973386448790298780}
+  firstPlayerPositionX: 0
+  firstPlayerPositionY: 0
+  firstPlayerPositionZ: 0
 --- !u!114 &1427360974838221583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1640,7 +1642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50370217ae55242dea982d62742f4c22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 0.3
+  canRotate: 1
 --- !u!54 &1860269275046447050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1666,7 +1668,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 0
 --- !u!1 &6996155310086724465
 GameObject:
