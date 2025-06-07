@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WarningManager : MonoBehaviour
@@ -8,57 +7,49 @@ public class WarningManager : MonoBehaviour
     [SerializeField] private GameObject outSideWarning;
     [SerializeField] private GameObject middleWarning;
     [SerializeField] private GameObject inSideWarning;
+
     private Get_Information info;
+
+    void Start()
+    {
+        info = FindObjectOfType<Get_Information>();
+    }
 
     void Update()
     {
         ObserveWarningLevel();
     }
 
-    void Start()
-    {
-        this.info = new Get_Information();
-    }
-
-    /// <summary>
-    /// 警告レベルを観察する
-    /// 各警告オブジェクトの侵入判定を監視し、どれかに侵入した場合、警告レベルを設定する
-    /// 侵入していない場合は、警告レベルを5に設定する
-    /// </summary>
-
     private void ObserveWarningLevel()
     {
+        int newLevel = 5; // 初期は安全レベル
+
         var outSideWarningComponent = outSideWarning.GetComponent<HandleOutSideWarning>();
         var middleWarningComponent = middleWarning.GetComponent<HandleMiddleWarning>();
         var inSideWarningComponent = inSideWarning.GetComponent<HandleInSideWarning>();
+
         if (GameSystem.Instance.GetCanMove())
         {
             if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
-            {
-                info.GetOutGoingMsg("3");
-                this.warningLevel = 3;
-            }
-            else if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
-            {
-                info.GetOutGoingMsg("3");
-                this.warningLevel = 2;
-            }
-            else if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
-            {
-                info.GetOutGoingMsg("1");
-                this.warningLevel = 1;
-            }
-            else
-            {
-                info.GetOutGoingMsg("5");
-                this.warningLevel = 5;
-            }
+                newLevel = Mathf.Min(newLevel, 3);
+
+            if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
+                newLevel = Mathf.Min(newLevel, 2);
+
+            if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
+                newLevel = Mathf.Min(newLevel, 1);
+
+            else newLevel = Mathf.Min(newLevel, 5);
         }
-        else
+
+        // レベルが変わった場合のみ送信
+        if (newLevel != warningLevel)
         {
-            info.GetOutGoingMsg("5");
-            this.warningLevel = 5;
+            warningLevel = newLevel;
+            byte msg = (byte)(warningLevel + '0'); // '1'〜'5'
+            info.SetOutgoingByte(msg);
         }
-        //Debug.Log("warning:" + warningLevel);
+
+        // Debug.Log($"[WarningDebug] Outer: {outSideWarningComponent.GetIsHit()}, Middle: {middleWarningComponent.GetIsHit()}, Inner: {inSideWarningComponent.GetIsHit()}");
     }
 }

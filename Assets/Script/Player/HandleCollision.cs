@@ -4,46 +4,64 @@ using UnityEngine;
 
 public class HandleCollision : MonoBehaviour
 {
-    // ダイアログを追加する親のCanvas
     [SerializeField] private Canvas parent = default;
     [SerializeField] private GameObject biribiriModal = default;
     [SerializeField] private GameObject goalModal = default;
+
     private Get_Information info;
+    private WarningDelayManager delayManager;
 
     private void Start()
     {
-        this.info = new Get_Information();
+        info = FindObjectOfType<Get_Information>();
+        delayManager = new WarningDelayManager(this, info.SetOutgoingByte);
     }
 
-    /// <summary>
-    /// 衝突判定
-    /// 衝突したオブジェクトが棒ならば、ゲームオーバー
-    /// 衝突したオブジェクトがゴールならば、ゴール
-    /// </summary>
-    /// <param name="collision"></param>
     void OnCollisionEnter(Collision collision)
     {
-        // 衝突したオブジェクトの名前をログに表示
-        if (collision.gameObject.tag == "Stick")
+        if (collision.gameObject.CompareTag("Stick") || collision.gameObject.CompareTag("Goal"))
         {
-            // Debug.Log("Stick");
             GameSystem.Instance.SetCanRotate(false);
             GameSystem.Instance.SetCanMove(false);
-            //BiribiriModalプレハブをCanvasの子要素として生成
-            var _dialog = Instantiate(biribiriModal) as GameObject;
-            _dialog.transform.SetParent(parent.transform, false);
-            info.GetOutGoingMsg("4");
-            Debug.Log("Game Over");
 
+            // 回転スクリプトの停止
+            var rotateX = GetComponent<HandleRotateX>();
+            if (rotateX != null)
+            {
+                rotateX.canRotate = false;
+                Debug.Log("[HandleCollision] X回転停止");
+            }
+
+            // Player側の YZ回転を止める
+            var playerObj = transform.root; // または transform.parent
+            var rotateYZ = playerObj.GetComponent<HandleRotateYZ>();
+            if (rotateYZ != null)
+            {
+                rotateYZ.canRotate = false;
+                Debug.Log("[HandleCollision] YZ回転停止（Player経由）");
+            }
+
+
+            // モーダルの表示
+            GameObject dialogPrefab = collision.gameObject.CompareTag("Stick") ? biribiriModal : goalModal;
+            var dialog = Instantiate(dialogPrefab);
+            dialog.transform.SetParent(parent.transform, false);
+
+            // 衝突時の追加処理（Goalには不要）
+            if (collision.gameObject.CompareTag("Stick") && delayManager != null)
+            {
+                Debug.Log("Calling Send4Then5()");
+                delayManager.Send4Then5();
+                StartCoroutine(ResetDelayAfter(5f));
+                Debug.Log("Game Over");
+            }
         }
-        else if (collision.gameObject.tag == "Goal")
-        {
-            // Debug.Log("Goal");
-            GameSystem.Instance.SetCanRotate(false);
-            GameSystem.Instance.SetCanMove(false);
-            //BiribiriModalプレハブをCanvasの子要素として生成
-            var _dialog = Instantiate(goalModal) as GameObject;
-            _dialog.transform.SetParent(parent.transform, false);
-        }
+    }
+
+    private IEnumerator ResetDelayAfter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        delayManager?.Reset();
+        Debug.Log("[HandleCollision] WarningDelayManager Reset after delay");
     }
 }

@@ -1,67 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class ReStartButton : MonoBehaviour
 {
-    [SerializeField] private GameObject player; // Playerオブジェクトを参照するためのフィールド
-    private Get_Information info;
-    private string[] data = new string[5];
-    int baibz = 0;
+    [SerializeField] private GameObject player; // CircleHandle をアサインする予定だが、念のため再取得する
 
     void Start()
     {
-        this.info = new Get_Information();
+        // 確実に CircleHandle を取得して使う（Inspectorに設定されていても上書き）
+        GameObject circleHandle = GameObject.Find("CircleHandle");
+        if (circleHandle != null)
+        {
+            player = circleHandle;
+            Debug.Log("[診断] player を CircleHandle に上書き");
+        }
+        else
+        {
+            Debug.LogError("[ReStartButton] CircleHandle がシーン上に見つかりません！");
+        }
     }
 
-    void Update()
-    {
-        if (CountText(",", info.Getinfo()) == 4)
-        {
-            data = info.Getinfo().Split(',');
-            baibz = int.Parse(data[4]);
-        }
-        if (baibz == 1) ReStart();
-    }
     public void OnClick()
     {
         ReStart();
     }
 
-
-    private int CountText(string search, string target)
-    {
-        int cnt = 0;
-        bool check = true;
-
-        while (check)
-        {
-            if (target.IndexOf(search, System.StringComparison.CurrentCulture) == -1)
-            {
-                check = false;
-            }
-            else
-            {
-                target = target.Remove(0, target.IndexOf(search, System.StringComparison.CurrentCulture) + 1);
-                cnt++;
-            }
-        }
-
-        return cnt;
-    }
-
     private void ReStart()
     {
-        // シーンを再読み込み
         GameSystem.Instance.SetCanRotate(true);
         GameSystem.Instance.SetCanMove(true);
-
-        //親の親コンポーネントの破壊
-        Destroy(transform.parent.parent.gameObject);
-
         GameSystem.isReset = true;
         GameSystem.clearTime = 0;
+
+        // ダイアログを閉じる
+        Destroy(transform.parent.parent.gameObject);
+
+        if (player == null)
+        {
+            Debug.LogError("[ReStartButton] player が null のままです");
+            return;
+        }
+
+        // Rigidbody の拘束解除（回転フリー、位置固定）
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.constraints = RigidbodyConstraints.FreezePositionX |
+                             RigidbodyConstraints.FreezePositionY |
+                             RigidbodyConstraints.FreezePositionZ;
+
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            Debug.Log("Rigidbody 拘束解除");
+        }
+
+        // X回転スクリプトの復帰（CircleHandle にある）
+        var rotateX = player.GetComponent<HandleRotateX>();
+        if (rotateX != null)
+        {
+            rotateX.canRotate = true;
+        }
+        else
+        {
+            Debug.LogWarning("HandleRotateX が " + player.name + " に見つかりません");
+        }
+
+        // YZ回転スクリプトの復帰（親 Player にある）
+        var rotateYZ = player.transform.root.GetComponent<HandleRotateYZ>();
+        if (rotateYZ != null)
+        {
+            rotateYZ.canRotate = true;
+        }
+        else
+        {
+            Debug.LogWarning("HandleRotateYZ が Player に見つかりません");
+        }
     }
 }

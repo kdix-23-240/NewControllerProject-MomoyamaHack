@@ -1,51 +1,99 @@
+// Unity用ヘッダー同期付き・整数角度対応シリアル受信スクリプト
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.IO.Ports;
 using System.Threading;
-using Unity.VisualScripting;
-using System;
-using UnityEngine.UIElements;
 
 public class Get_Information : MonoBehaviour
 {
-    public SerialPort serial = new SerialPort("COM8");
-    static string incomingMsg = " ";
-    public static string outgoingMsg = "5";
-    private string[] data = new string[4];
+    [Header("Serial Port Settings")]
+    public string portName = "COM9";
+    public int baudRate = 9600;
+
+    private SerialPort serial;
+    private Thread readThread;
+    private volatile bool isRunning = false;
+
+    public float[] receivedData = new float[4]; // pitch, roll, yaw, bend（角度はfloatとして返す）
+
+    private const int messageSize = 8; // int16 * 4
+    private byte[] buffer = new byte[messageSize];
 
     void Start()
     {
-        serial.Open();
-        serial.DtrEnable = true; //Configuramos control de datos por DTR.
-                                 // We configure data control by DTR.
-        serial.ReadTimeout = 10000;
-        serial.WriteTimeout = 10000;
+        serial = new SerialPort(portName, baudRate);
+        serial.ReadTimeout = 1000;
+        serial.WriteTimeout = 1000;
+        serial.DtrEnable = true;
 
-    }
-    void Update()
-    {
-        //print(serial.ReadLine());
-        //Debug.Log(incomingMsg);
-        incomingMsg = serial.ReadLine();
-        if (incomingMsg != " ")
+        try
         {
-            if (outgoingMsg != " ")
-            {
-                serial.WriteLine(outgoingMsg);
-                outgoingMsg = " ";
-            }
-            //Debug.Log("Out = " + outgoingMsg);
+            serial.Open();
+            isRunning = true;
+            readThread = new Thread(ReadSerialData);
+            readThread.Start();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to open serial port: " + e.Message);
         }
     }
 
-    public void GetOutGoingMsg(String Msg)
+    void OnDestroy()
     {
-        outgoingMsg = Msg;
+        isRunning = false;
+        if (readThread != null && readThread.IsAlive)
+            readThread.Join();
+
+        if (serial != null && serial.IsOpen)
+            serial.Close();
     }
 
-    public string Getinfo()
+    // ヘッダー同期付き整数角度受信
+    private void ReadSerialData()
     {
-        return (incomingMsg);
+        while (isRunning)
+        {
+            try
+            {
+                while (serial.ReadByte() != 'S')
+                {
+                    if (!isRunning) return;
+                }
+
+                int bytesRead = 0;
+                while (bytesRead < messageSize)
+                {
+                    bytesRead += serial.Read(buffer, bytesRead, messageSize - bytesRead);
+                }
+
+                // int16_t → float変換（0.1度単位）
+                for (int i = 0; i < 3; i++)
+                {
+                    short raw = BitConverter.ToInt16(buffer, i * 2);
+                    receivedData[i] = raw / 10.0f;
+                }
+
+                receivedData[3] = BitConverter.ToInt16(buffer, 6); // bendはそのまま
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Serial Read Error: " + e.Message);
+            }
+        }
+    }
+
+    public void SetOutgoingByte(byte msg)
+    {
+        if (serial != null && serial.IsOpen)
+        {
+            serial.Write(new byte[] { msg }, 0, 1);
+            Debug.Log($"[WarningSystem] Sent warning level command: '{(char)msg}'");
+        }
+    }
+
+    public float[] GetReceivedData()
+    {
+        return receivedData;
     }
 }

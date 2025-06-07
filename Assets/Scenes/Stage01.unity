@@ -1774,6 +1774,10 @@ PrefabInstance:
       propertyPath: firstPlayerPositionZ
       value: -0.16
       objectReference: {fileID: 0}
+    - target: {fileID: 4973386448790298780, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+      propertyPath: m_Name
+      value: CircleHandle
+      objectReference: {fileID: 0}
     - target: {fileID: 5275195133340298052, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: field of view
       value: 48
