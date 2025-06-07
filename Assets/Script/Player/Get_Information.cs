@@ -7,20 +7,22 @@ using System.Threading;
 public class Get_Information : MonoBehaviour
 {
     [Header("Serial Port Settings")]
-    public string portName = "COM9";
-    public int baudRate = 9600;
+    public string portName = "COM9";  // 使用するシリアルポート名
+    public int baudRate = 9600;       // 通信速度（ボーレート）
 
-    private SerialPort serial;
-    private Thread readThread;
-    private volatile bool isRunning = false;
+    private SerialPort serial;        // シリアルポートインスタンス
+    private Thread readThread;       // データ受信用スレッド
+    private volatile bool isRunning = false;  // 受信スレッドの制御フラグ
 
-    public float[] receivedData = new float[4]; // pitch, roll, yaw, bend（角度はfloatとして返す）
+    public float[] receivedData = new float[4]; // 受信データ：pitch, roll, yaw, bend
 
-    private const int messageSize = 8; // int16 * 4
-    private byte[] buffer = new byte[messageSize];
+    private const int messageSize = 8;         // データ長（int16が4つで8バイト）
+    private byte[] buffer = new byte[messageSize]; // バッファ配列
 
+    // Startはゲーム開始時に一度だけ呼び出される初期化処理
     void Start()
     {
+        // シリアルポート初期化
         serial = new SerialPort(portName, baudRate);
         serial.ReadTimeout = 1000;
         serial.WriteTimeout = 1000;
@@ -28,6 +30,7 @@ public class Get_Information : MonoBehaviour
 
         try
         {
+            // シリアルポートを開き、受信用スレッドを開始
             serial.Open();
             isRunning = true;
             readThread = new Thread(ReadSerialData);
@@ -39,8 +42,10 @@ public class Get_Information : MonoBehaviour
         }
     }
 
+    // オブジェクト破棄時に呼ばれるクリーンアップ処理
     void OnDestroy()
     {
+        // スレッドを停止し、シリアルポートを閉じる
         isRunning = false;
         if (readThread != null && readThread.IsAlive)
             readThread.Join();
@@ -49,32 +54,35 @@ public class Get_Information : MonoBehaviour
             serial.Close();
     }
 
-    // ヘッダー同期付き整数角度受信
+    // シリアルデータを非同期に読み取る処理（ヘッダー同期付き）
     private void ReadSerialData()
     {
         while (isRunning)
         {
             try
             {
+                // 'S'（ヘッダー文字）を受信するまで読み飛ばす
                 while (serial.ReadByte() != 'S')
                 {
                     if (!isRunning) return;
                 }
 
+                // ヘッダー後の8バイトをバッファに読み込む（完全受信までループ）
                 int bytesRead = 0;
                 while (bytesRead < messageSize)
                 {
                     bytesRead += serial.Read(buffer, bytesRead, messageSize - bytesRead);
                 }
 
-                // int16_t → float変換（0.1度単位）
+                // ピッチ・ロール・ヨー（角度）はint16で0.1度単位なのでfloatに変換
                 for (int i = 0; i < 3; i++)
                 {
                     short raw = BitConverter.ToInt16(buffer, i * 2);
                     receivedData[i] = raw / 10.0f;
                 }
 
-                receivedData[3] = BitConverter.ToInt16(buffer, 6); // bendはそのまま
+                // bend（曲げセンサー値）はint16のまま格納
+                receivedData[3] = BitConverter.ToInt16(buffer, 6);
             }
             catch (Exception e)
             {
@@ -83,6 +91,7 @@ public class Get_Information : MonoBehaviour
         }
     }
 
+    // シリアルポートに1バイトのコマンドを送信するメソッド
     public void SetOutgoingByte(byte msg)
     {
         if (serial != null && serial.IsOpen)
@@ -92,6 +101,7 @@ public class Get_Information : MonoBehaviour
         }
     }
 
+    // 外部から現在の受信データ（float[4]）を取得するためのゲッター
     public float[] GetReceivedData()
     {
         return receivedData;

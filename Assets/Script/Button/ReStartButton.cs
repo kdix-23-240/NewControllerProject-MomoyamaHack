@@ -1,12 +1,19 @@
 using UnityEngine;
 
+/// <summary>
+/// 「再スタート」ボタンの処理を担当するスクリプト
+/// ゲームの状態を初期化し、プレイヤーを再稼働させる
+/// </summary>
 public class ReStartButton : MonoBehaviour
 {
-    [SerializeField] private GameObject player; // CircleHandle をアサインする予定だが、念のため再取得する
+    [SerializeField] private GameObject player; // CircleHandle をアサインする予定（再取得で上書きされる）
 
+    /// <summary>
+    /// ゲーム開始時に CircleHandle を自動取得し、player として登録
+    /// </summary>
     void Start()
     {
-        // 確実に CircleHandle を取得して使う（Inspectorに設定されていても上書き）
+        // シーン上の "CircleHandle" オブジェクトを検索して player に設定
         GameObject circleHandle = GameObject.Find("CircleHandle");
         if (circleHandle != null)
         {
@@ -19,19 +26,26 @@ public class ReStartButton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ボタンクリック時のコールバック（Unityイベントから呼ばれる）
+    /// </summary>
     public void OnClick()
     {
         ReStart();
     }
 
+    /// <summary>
+    /// ゲーム状態をリセットしてプレイヤーの動作を再開させる
+    /// </summary>
     private void ReStart()
     {
+        // 移動・回転フラグを有効化、タイマーとリセットフラグも初期化
         GameSystem.Instance.SetCanRotate(true);
         GameSystem.Instance.SetCanMove(true);
         GameSystem.isReset = true;
         GameSystem.clearTime = 0;
 
-        // ダイアログを閉じる
+        // 親Canvas上のダイアログUIを閉じる（ボタンの親の親）
         Destroy(transform.parent.parent.gameObject);
 
         if (player == null)
@@ -40,21 +54,7 @@ public class ReStartButton : MonoBehaviour
             return;
         }
 
-        // Rigidbody の拘束解除（回転フリー、位置固定）
-        Rigidbody rb = player.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.constraints = RigidbodyConstraints.FreezePositionX |
-                             RigidbodyConstraints.FreezePositionY |
-                             RigidbodyConstraints.FreezePositionZ;
-
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
-            Debug.Log("Rigidbody 拘束解除");
-        }
-
-        // X回転スクリプトの復帰（CircleHandle にある）
+        // X回転（HandleRotateX）を再び有効にする
         var rotateX = player.GetComponent<HandleRotateX>();
         if (rotateX != null)
         {
@@ -65,7 +65,7 @@ public class ReStartButton : MonoBehaviour
             Debug.LogWarning("HandleRotateX が " + player.name + " に見つかりません");
         }
 
-        // YZ回転スクリプトの復帰（親 Player にある）
+        // YZ回転（HandleRotateYZ）を再び有効にする（親オブジェクト側に存在）
         var rotateYZ = player.transform.root.GetComponent<HandleRotateYZ>();
         if (rotateYZ != null)
         {

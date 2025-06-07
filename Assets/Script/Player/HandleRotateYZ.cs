@@ -7,36 +7,52 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
+/// <summary>
+/// プレイヤーまたはオブジェクトをY軸・Z軸（ピッチ・ヨー）方向に傾けるスクリプト
+/// シリアル通信から得た角度データに基づいて、姿勢を更新する
+/// </summary>
 public class HandleRotateYZ : MonoBehaviour
 {
-    private Get_Information info;
-    float pitch = 0;
-    float yaw = 0;
-    Transform myTransform;
-    public bool canRotate = true; // ← フラグ追加
+    private Get_Information info;  // 角度データ取得用の通信スクリプト
+    float pitch = 0;               // ピッチ角（上下の傾き）
+    float yaw = 0;                 // ヨー角（左右の方向）
+    Transform myTransform;        // このオブジェクトのTransform情報
+    public bool canRotate = true; // 回転の可否を制御するフラグ
 
+    /// <summary>
+    /// 初期化処理：Transform取得と通信スクリプトの参照確保
+    /// </summary>
     void Start()
     {
-        info = FindObjectOfType<Get_Information>();
-        myTransform = this.transform;
+        info = FindObjectOfType<Get_Information>(); // 受信スクリプトの取得
+        myTransform = this.transform;               // 自身のTransform取得
     }
 
+    /// <summary>
+    /// 毎フレーム呼ばれる処理：pitchとyawを取得して姿勢を更新
+    /// </summary>
     void Update()
     {
-        if (!canRotate) return; // ← フラグ判定を追加
+        // 回転が許可されていない場合は処理をスキップ
+        if (!canRotate) return;
 
+        // シリアルから角度データを取得
         float[] data = info.GetReceivedData();
-        pitch = data[0]; // pitch
-        yaw = data[2];   // yaw
+        pitch = data[0]; // ピッチ（上下の傾き）
+        yaw = data[2];   // ヨー（水平回転）
 
+        // 実際にオブジェクトの姿勢を更新
         LimitRotate();
     }
 
+    /// <summary>
+    /// ピッチとヨーに基づいてオブジェクトの回転を更新
+    /// </summary>
     private void LimitRotate()
     {
-        Vector3 worldAngle = myTransform.localEulerAngles;
-        worldAngle.x = -pitch;
-        worldAngle.y = yaw;
-        myTransform.localEulerAngles = worldAngle;
+        Vector3 worldAngle = myTransform.localEulerAngles; // 現在の回転角度を取得
+        worldAngle.x = -pitch;                             // ピッチは符号反転（視覚補正）
+        worldAngle.y = yaw;                                // ヨーはそのまま反映
+        myTransform.localEulerAngles = worldAngle;         // 回転を適用
     }
 }
