@@ -88,6 +88,7 @@ public class Get_Information : MonoBehaviour
         if (serial != null && serial.IsOpen)
         {
             serial.Write(new byte[] { msg }, 0, 1);
+            Debug.Log($"[WarningSystem] Sent warning level command: '{(char)msg}'");
         }
     }
 

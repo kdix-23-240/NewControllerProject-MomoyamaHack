@@ -22,6 +22,8 @@ public class WarningManager : MonoBehaviour
 
     private void ObserveWarningLevel()
     {
+        int newLevel = 5; // 初期は安全レベル
+
         var outSideWarningComponent = outSideWarning.GetComponent<HandleOutSideWarning>();
         var middleWarningComponent = middleWarning.GetComponent<HandleMiddleWarning>();
         var inSideWarningComponent = inSideWarning.GetComponent<HandleInSideWarning>();
@@ -29,32 +31,25 @@ public class WarningManager : MonoBehaviour
         if (GameSystem.Instance.GetCanMove())
         {
             if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
-            {
-                info.SetOutgoingByte((byte)'3');
-                warningLevel = 3;
-            }
-            else if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
-            {
-                info.SetOutgoingByte((byte)'3');
-                warningLevel = 2;
-            }
-            else if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
-            {
-                info.SetOutgoingByte((byte)'1');
-                warningLevel = 1;
-            }
-            else
-            {
-                info.SetOutgoingByte((byte)'5');
-                warningLevel = 5;
-            }
-        }
-        else
-        {
-            info.SetOutgoingByte((byte)'5');
-            warningLevel = 5;
+                newLevel = Mathf.Min(newLevel, 3);
+
+            if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
+                newLevel = Mathf.Min(newLevel, 2);
+
+            if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
+                newLevel = Mathf.Min(newLevel, 1);
+
+            else newLevel = Mathf.Min(newLevel, 5);
         }
 
-        // Debug.Log("warning:" + warningLevel);
+        // レベルが変わった場合のみ送信
+        if (newLevel != warningLevel)
+        {
+            warningLevel = newLevel;
+            byte msg = (byte)(warningLevel + '0'); // '1'〜'5'
+            info.SetOutgoingByte(msg);
+        }
+
+        // Debug.Log($"[WarningDebug] Outer: {outSideWarningComponent.GetIsHit()}, Middle: {middleWarningComponent.GetIsHit()}, Inner: {inSideWarningComponent.GetIsHit()}");
     }
 }

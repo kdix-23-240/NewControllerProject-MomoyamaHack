@@ -22,7 +22,7 @@ public class PlayerMove : MonoBehaviour
         float[] data = info.GetReceivedData();
         bend = data[3]; // bendはインデックス3
 
-        moveSpeed = 0.00005f * bend * bend;
+        moveSpeed = 0.00002f * bend * bend;
 
         if (GameSystem.Instance.GetCanMove())
             MoveHandle();
