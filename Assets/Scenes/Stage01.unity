@@ -1767,6 +1767,10 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4091660379845818357, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+      propertyPath: bend_wall
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091660379845818357, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: firstPlayerPositionX
       value: -0.16
       objectReference: {fileID: 0}

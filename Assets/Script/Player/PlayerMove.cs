@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float firstPlayerPositionX;      // 初期位置X
     [SerializeField] private float firstPlayerPositionY;      // 初期位置Y
     [SerializeField] private float firstPlayerPositionZ;      // 初期位置Z
+    [SerializeField] private int bend_wall;      // 曲げセンサーの閾値
 
     private Get_Information info; // センサーデータ取得スクリプト
     float bend = 0;               // bend値（曲げセンサーの出力）
@@ -33,6 +34,8 @@ public class PlayerMove : MonoBehaviour
         // bend値の取得（index 3 に格納されている）
         float[] data = info.GetReceivedData();
         bend = data[3];
+
+        if (bend < bend_wall) bend = 0;
 
         // 移動速度は bend² に比例する（bendが大きいほど速く進む）
         moveSpeed = 0.00002f * bend * bend;
