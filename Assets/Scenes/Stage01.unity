@@ -1671,7 +1671,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7772577468821299050, guid: e394024aeadd8644abc0ba8e1845d07b, type: 3}
       propertyPath: m_Name
-      value: GameObject
+      value: Get_info
       objectReference: {fileID: 0}
     - target: {fileID: 8720527563386002079, guid: e394024aeadd8644abc0ba8e1845d07b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1730,6 +1730,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2337834930782273713, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+      propertyPath: rotate_con
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3387133439930478756, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.167
@@ -1767,8 +1771,12 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4091660379845818357, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
+      propertyPath: speed
+      value: 0.00005
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091660379845818357, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: bend_wall
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4091660379845818357, guid: 8df355c0b38d54a08be4048d7d39d3b2, type: 3}
       propertyPath: firstPlayerPositionX
