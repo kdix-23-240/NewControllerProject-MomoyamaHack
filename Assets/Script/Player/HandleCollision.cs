@@ -59,7 +59,7 @@ public class HandleCollision : MonoBehaviour
             {
                 Debug.Log("Calling Send4Then5()");
                 delayManager.Send4Then5(); // 警告レベル4→5の送信
-                StartCoroutine(ResetDelayAfter(5f)); // 5秒後に状態をリセット
+                StartCoroutine(ResetDelayAfter(1f)); // 1秒後に状態をリセット
                 Debug.Log("Game Over");
             }
         }
