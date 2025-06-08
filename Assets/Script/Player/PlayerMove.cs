@@ -13,6 +13,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float firstPlayerPositionX;      // 初期位置X
     [SerializeField] private float firstPlayerPositionY;      // 初期位置Y
     [SerializeField] private float firstPlayerPositionZ;      // 初期位置Z
+     [SerializeField] private float speed;      // 速度調節のための定数
     [SerializeField] private int bend_wall;      // 曲げセンサーの閾値
 
     private Get_Information info; // センサーデータ取得スクリプト
@@ -38,7 +39,7 @@ public class PlayerMove : MonoBehaviour
         if (bend < bend_wall) bend = 0;
 
         // 移動速度は bend² に比例する（bendが大きいほど速く進む）
-        moveSpeed = 0.00002f * bend * bend;
+        moveSpeed = speed * bend * bend;
 
         // 移動許可フラグが有効な場合、プレイヤーを進行方向に移動
         if (GameSystem.Instance.GetCanMove())

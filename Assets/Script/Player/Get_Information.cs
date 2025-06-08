@@ -16,7 +16,7 @@ public class Get_Information : MonoBehaviour
 
     public float[] receivedData = new float[4]; // 受信データ：pitch, roll, yaw, bend
 
-    private const int messageSize = 8;         // データ長（int16が4つで8バイト）
+    private const int messageSize = 7;         // データ長（int16が4つで8バイト）
     private byte[] buffer = new byte[messageSize]; // バッファ配列
 
     // Startはゲーム開始時に一度だけ呼び出される初期化処理
@@ -82,7 +82,7 @@ public class Get_Information : MonoBehaviour
                 }
 
                 // bend（曲げセンサー値）はint16のまま格納
-                receivedData[3] = BitConverter.ToInt16(buffer, 6);
+                receivedData[3] = (float)buffer[6];
             }
             catch (Exception e)
             {

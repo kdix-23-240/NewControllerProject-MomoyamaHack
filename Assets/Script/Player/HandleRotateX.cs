@@ -15,6 +15,7 @@ public class HandleRotateX : MonoBehaviour
 {
     private Get_Information info;    // シリアル通信からデータを取得するスクリプト
     float roll = 0;                  // 受信したroll角（左右の傾き）
+    [SerializeField] private float rotate_con;      // roll角の規格化のための定数
     Transform myTransform;          // このオブジェクトのTransform
     public bool canRotate = true;   // 回転を許可するかどうかのフラグ
 
@@ -49,7 +50,7 @@ public class HandleRotateX : MonoBehaviour
     private void LimitRotate()
     {
         Vector3 worldAngle = myTransform.localEulerAngles;  // 現在の角度を取得
-        worldAngle.z = 1.5f * roll + 90;                    // roll角を1.5倍し90度オフセットを追加
+        worldAngle.z = rotate_con * roll + 90;                    // roll角を1.5倍し90度オフセットを追加
         myTransform.localEulerAngles = worldAngle;          // 反映させる
     }
 }
