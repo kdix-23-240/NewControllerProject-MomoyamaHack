@@ -57,7 +57,6 @@ public class HandleCollision : MonoBehaviour
             // Stick（障害物）に衝突した場合の追加処理
             if (collision.gameObject.CompareTag("Stick") && delayManager != null)
             {
-                delayManager.Reset(); 
                 Debug.Log("Calling Send4Then5()");
                 delayManager.Send4Then5(); // 警告レベル4→5の送信
                 StartCoroutine(ResetDelayAfter(1f)); // 1秒後に状態をリセット
