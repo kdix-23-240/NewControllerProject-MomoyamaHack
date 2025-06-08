@@ -101,6 +101,11 @@ public class WarningDelayManager
     /// </summary>
     public void Reset()
     {
+        if (currentCoroutine != null && coroutineHostRef != null)
+        {
+            coroutineHostRef.StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
         hasSent5 = false;
     }
 }
@@ -123,6 +128,7 @@ public class WarningUIWatcher : MonoBehaviour
             // 新しく選ばれたオブジェクトがボタンだった場合、イベントを発火
             if (selected.GetComponent<Button>() != null)
             {
+                Debug.Log($"[UIWatcher] Button selected: {selected.name}"); // ★追加
                 onAnyButtonPressed?.Invoke();
             }
             lastSelected = selected;
