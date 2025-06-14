@@ -1,3 +1,10 @@
 {
-    "dotnet.preferCSharpExtension": true
+    "dotnet.preferCSharpExtension": true,
+    "vscode_vibrancy.disableFramelessWindow": true,
+    "vscode_vibrancy.enableAutoTheme": true,
+    "vscode_vibrancy.opacity": -1,
+    "vscode_vibrancy.preferedDarkTheme": "GitHub Dark Default",
+    "vscode_vibrancy.preferedLightTheme": "Noir et blanc",
+    "vscode_vibrancy.refreshInterval": 10,
+    "vscode_vibrancy.theme": "GitHub Dark Default"
 }
