@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public class WarningManager : MonoBehaviour
 {
-    private int warningLevel = 5;
+    private char warningLevel = '5';
 
     [SerializeField] private GameObject outSideWarning;
     [SerializeField] private GameObject middleWarning;
@@ -44,9 +44,8 @@ public class WarningManager : MonoBehaviour
             if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
                 newLevel = Mathf.Min(newLevel, 1);
         }
-
-        warningLevel = newLevel;
-    }
+        warningLevel = (char)newLevel;
+   }
 
     /// <summary>
     /// 衝突時などに呼び出し、警告4→5を段階的に送信する
@@ -82,7 +81,7 @@ public class WarningManager : MonoBehaviour
         if (Get_Information.Instance != null)
         {
             Get_Information.Instance.SetOutgoingByte((byte)levelChar);
-            Debug.Log($"[WarningManager] Sent warning level command: '{levelChar}'");
+            //Debug.Log($"[WarningManager] Sent warning level command: '{levelChar}'");
         }
     }
 }
