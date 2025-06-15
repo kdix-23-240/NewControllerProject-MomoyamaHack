@@ -13,18 +13,17 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float firstPlayerPositionX;      // 初期位置X
     [SerializeField] private float firstPlayerPositionY;      // 初期位置Y
     [SerializeField] private float firstPlayerPositionZ;      // 初期位置Z
-     [SerializeField] private float speed;      // 速度調節のための定数
-    [SerializeField] private int bend_wall;      // 曲げセンサーの閾値
+    [SerializeField] private float speed;                     // 速度調節のための定数
+    [SerializeField] private float bend_wall;                   // 曲げセンサーの閾値
 
-    private Get_Information info; // センサーデータ取得スクリプト
     float bend = 0;               // bend値（曲げセンサーの出力）
 
     /// <summary>
-    /// 初期化処理：センサースクリプトの参照を取得
+    /// 初期化処理：特に不要（SingletonでGet_Informationにアクセスするため）
     /// </summary>
     void Start()
     {
-        info = FindObjectOfType<Get_Information>();
+        // Singletonアクセスなので何も不要
     }
 
     /// <summary>
@@ -32,8 +31,11 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // 安全確認：Get_Information未初期化なら中断
+        if (Get_Information.Instance == null) return;
+
         // bend値の取得（index 3 に格納されている）
-        float[] data = info.GetReceivedData();
+        float[] data = Get_Information.Instance.GetReceivedData();
         bend = data[3];
 
         if (bend < bend_wall) bend = 0;

@@ -3,7 +3,10 @@ guid: bb42a19ba43fb40e49566d0b4662449c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - parent: {instanceID: 0}
+  - biribiriModal: {fileID: 3392978752206617050, guid: 576a561992b884e2bac598f271aa7de9, type: 3}
+  - goalModal: {fileID: 2057319747324003658, guid: e8a4adb94e182485abf1d645736c07e6, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -6,9 +6,11 @@ using System.Threading;
 
 public class Get_Information : MonoBehaviour
 {
+    public static Get_Information Instance { get; private set; } // Singletonインスタンス
+
     [Header("Serial Port Settings")]
-    public string portName = "COM9";  // 使用するシリアルポート名
-    public int baudRate = 9600;       // 通信速度（ボーレート）
+    private string portName = "COM9";  // 使用するシリアルポート名（※元はpublicだが、外部設定不要なのでprivateに）
+    private int baudRate = 9600;       // 通信速度（ボーレート）
 
     private SerialPort serial;        // シリアルポートインスタンス
     private Thread readThread;       // データ受信用スレッド
@@ -16,8 +18,22 @@ public class Get_Information : MonoBehaviour
 
     public float[] receivedData = new float[4]; // 受信データ：pitch, roll, yaw, bend
 
-    private const int messageSize = 7;         // データ長（int16が4つで8バイト）
+    private const int messageSize = 8;         // データ長（int16が4つで8バイト）
     private byte[] buffer = new byte[messageSize]; // バッファ配列
+
+    // Awakeはインスタンス生成時に最初に呼ばれる
+    void Awake()
+    {
+        // Singleton初期化（複数生成防止）
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject); // シーン遷移でも破棄しない
+    }
 
     // Startはゲーム開始時に一度だけ呼び出される初期化処理
     void Start()
@@ -81,8 +97,9 @@ public class Get_Information : MonoBehaviour
                     receivedData[i] = raw / 10.0f;
                 }
 
-                // bend（曲げセンサー値）はint16のまま格納
-                receivedData[3] = (float)buffer[6];
+            // bend（float値 *10 をint16_tに変換されたもの）を受信
+            short bendRaw = BitConverter.ToInt16(buffer, 6);  // 6バイト目から2バイト
+            receivedData[3] = bendRaw / 10.0f;  // 0.1刻みで変換
             }
             catch (Exception e)
             {
