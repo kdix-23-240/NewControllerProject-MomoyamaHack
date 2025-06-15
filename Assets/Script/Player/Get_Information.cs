@@ -6,9 +6,11 @@ using System.Threading;
 
 public class Get_Information : MonoBehaviour
 {
+    public static Get_Information Instance { get; private set; } // Singletonインスタンス
+
     [Header("Serial Port Settings")]
-    public string portName = "COM9";  // 使用するシリアルポート名
-    public int baudRate = 9600;       // 通信速度（ボーレート）
+    private string portName = "COM9";  // 使用するシリアルポート名（※元はpublicだが、外部設定不要なのでprivateに）
+    private int baudRate = 9600;       // 通信速度（ボーレート）
 
     private SerialPort serial;        // シリアルポートインスタンス
     private Thread readThread;       // データ受信用スレッド
@@ -18,6 +20,31 @@ public class Get_Information : MonoBehaviour
 
     private const int messageSize = 7;         // データ長（int16が4つで8バイト）
     private byte[] buffer = new byte[messageSize]; // バッファ配列
+
+    // // ✅ 自動生成：ゲーム起動時に一度だけ呼び出される初期化処理
+    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    // static void Initialize()
+    // {
+    //     if (Instance == null)
+    //     {
+    //         GameObject go = new GameObject("Get_Information");
+    //         go.AddComponent<Get_Information>();
+    //     }
+    // }
+
+    // Awakeはインスタンス生成時に最初に呼ばれる
+    void Awake()
+    {
+        // Singleton初期化（複数生成防止）
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject); // シーン遷移でも破棄しない
+    }
 
     // Startはゲーム開始時に一度だけ呼び出される初期化処理
     void Start()

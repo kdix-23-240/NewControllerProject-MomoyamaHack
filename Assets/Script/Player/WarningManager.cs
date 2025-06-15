@@ -13,16 +13,6 @@ public class WarningManager : MonoBehaviour
     [SerializeField] private GameObject middleWarning;    // 中間の警告エリア
     [SerializeField] private GameObject inSideWarning;    // 内側の警告エリア
 
-    private Get_Information info; // シリアル通信スクリプト
-
-    /// <summary>
-    /// 開始時にデータ送信元（Get_Information）を取得
-    /// </summary>
-    void Start()
-    {
-        info = FindObjectOfType<Get_Information>();
-    }
-
     /// <summary>
     /// 毎フレーム警告レベルを監視し、必要があればシリアル送信を行う
     /// </summary>
@@ -68,7 +58,12 @@ public class WarningManager : MonoBehaviour
         {
             warningLevel = newLevel;
             byte msg = (byte)(warningLevel + '0'); // 数値→ASCII（'1'〜'5'）
-            info.SetOutgoingByte(msg);
+
+            // Get_Informationが存在する場合のみ送信
+            if (Get_Information.Instance != null)
+            {
+                Get_Information.Instance.SetOutgoingByte(msg);
+            }
         }
 
         // Debug.Logでの詳細出力（デバッグ時のみ有効に）
