@@ -18,19 +18,8 @@ public class Get_Information : MonoBehaviour
 
     public float[] receivedData = new float[4]; // 受信データ：pitch, roll, yaw, bend
 
-    private const int messageSize = 7;         // データ長（int16が4つで8バイト）
+    private const int messageSize = 8;         // データ長（int16が4つで8バイト）
     private byte[] buffer = new byte[messageSize]; // バッファ配列
-
-    // // ✅ 自動生成：ゲーム起動時に一度だけ呼び出される初期化処理
-    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    // static void Initialize()
-    // {
-    //     if (Instance == null)
-    //     {
-    //         GameObject go = new GameObject("Get_Information");
-    //         go.AddComponent<Get_Information>();
-    //     }
-    // }
 
     // Awakeはインスタンス生成時に最初に呼ばれる
     void Awake()
@@ -108,8 +97,9 @@ public class Get_Information : MonoBehaviour
                     receivedData[i] = raw / 10.0f;
                 }
 
-                // bend（曲げセンサー値）はint16のまま格納
-                receivedData[3] = (float)buffer[6];
+            // bend（float値 *10 をint16_tに変換されたもの）を受信
+            short bendRaw = BitConverter.ToInt16(buffer, 6);  // 6バイト目から2バイト
+            receivedData[3] = bendRaw / 10.0f;  // 0.1刻みで変換
             }
             catch (Exception e)
             {

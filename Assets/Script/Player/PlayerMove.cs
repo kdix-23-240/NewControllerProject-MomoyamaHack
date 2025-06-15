@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float firstPlayerPositionY;      // 初期位置Y
     [SerializeField] private float firstPlayerPositionZ;      // 初期位置Z
     [SerializeField] private float speed;                     // 速度調節のための定数
-    [SerializeField] private int bend_wall;                   // 曲げセンサーの閾値
+    [SerializeField] private float bend_wall;                   // 曲げセンサーの閾値
 
     float bend = 0;               // bend値（曲げセンサーの出力）
 
