@@ -13,7 +13,7 @@ public class HandleInSideWarning : MonoBehaviour
     /// <param name="collision"></param>
     void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("[Side] Enter" );
+        Debug.Log("[InSide] Enter" );
         // 衝突したオブジェクトの名前をログに表示
         if (collision.gameObject.tag == "Stick")
         {
@@ -29,7 +29,7 @@ public class HandleInSideWarning : MonoBehaviour
 
     void OnTriggerExit(Collider collision)
     {
-        Debug.Log("[Side] Exit" );
+        Debug.Log("[InSide] Exit" );
         // 衝突したオブジェクトの名前をログに表示
         if (collision.gameObject.tag == "Stick")
         {

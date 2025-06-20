@@ -7,7 +7,7 @@ public class HandleMiddleWarning : MonoBehaviour
     private bool isHit = false;
     void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("[OutSide] Enter" );
+        Debug.Log("[MiddleSide] Enter" );
         // 衝突したオブジェクトの名前をログに表示
         if (collision.gameObject.tag == "Stick")
         {
@@ -17,7 +17,7 @@ public class HandleMiddleWarning : MonoBehaviour
 
     void OnTriggerExit(Collider collision)
     {
-        Debug.Log("[OutSide] Exit" );
+        Debug.Log("[MiddleSide] Exit" );
         // 衝突したオブジェクトの名前をログに表示
         if (collision.gameObject.tag == "Stick")
         {
