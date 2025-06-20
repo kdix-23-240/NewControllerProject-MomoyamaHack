@@ -9,7 +9,7 @@ public class Get_Information : MonoBehaviour
     public static Get_Information Instance { get; private set; } // Singletonインスタンス
 
     [Header("Serial Port Settings")]
-    private string portName = "COM9";  // 使用するシリアルポート名（※元はpublicだが、外部設定不要なのでprivateに）
+    private string portName = "COM5";  // 使用するシリアルポート名（※元はpublicだが、外部設定不要なのでprivateに）
     private int baudRate = 9600;       // 通信速度（ボーレート）
 
     private SerialPort serial;        // シリアルポートインスタンス
