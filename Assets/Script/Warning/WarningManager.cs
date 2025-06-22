@@ -9,75 +9,69 @@ using UnityEngine.UI;
 /// </summary>
 public class WarningManager : MonoBehaviour
 {
-    [SerializeField] private GameObject warningParent;
-    private GameObject outSideWarning;
-    private GameObject middleWarning;
-    private GameObject inSideWarning;
-    private GameObject playerCollision;
-    private WarningPresenter warningPresenter;
+    private WarningPresenter warningPresenter; // 警告を表示するプレゼンター
 
     private void Awake()
     {
-        outSideWarning = warningParent.transform.Find("LowLevelWarning").gameObject;
-        middleWarning = warningParent.transform.Find("MiddleLevelWarning").gameObject;
-        inSideWarning = warningParent.transform.Find("HighLevelWarning").gameObject;
-        playerCollision = warningParent.transform.Find("PlayerCollision").gameObject;
         warningPresenter = GetComponent<WarningPresenter>();
-    }
-    private void Start()
-    {
-        if (outSideWarning == null)
+        if (warningPresenter == null)
         {
-            Debug.LogError("外側の警告がせっていされていません");
+            Debug.LogError("WarningPresenterが見つかりません。WarningManagerにアタッチしてください。");
         }
-        if (middleWarning == null)
-        {
-            Debug.LogError("中間の警告がせっていされていません");
-        }
-        if (inSideWarning == null)
-        {
-            Debug.LogError("内側の警告がせっていされていません");
-        }
-        if (playerCollision == null)
-        {
-            Debug.LogError("致命的な衝突の警告がせっていされていません");
-        }
-    }
-    void Update()
-    {
-        ObserveWarningLevel();
     }
 
     /// <summary>
     /// ゲーム中の警告領域に応じて警告レベルを監視（自動送信はしない）
     /// </summary>
-    private void ObserveWarningLevel()
+    public void ObserveWarningLevel1(bool isHit)
     {
-        var outSideWarningComponent = outSideWarning.GetComponent<HandleOutSideWarning>();
-        var middleWarningComponent = middleWarning.GetComponent<HandleMiddleWarning>();
-        var inSideWarningComponent = inSideWarning.GetComponent<HandleInSideWarning>();
-        var fatalCollisionComponent = playerCollision.GetComponent<PlayerCollision>();
-
-        if (GameSystem.Instance.GetCanMove())
+        if (isHit)
         {
-            if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
-            {
-                warningPresenter.WarningModel.WarningLevel.Value = 1; // 外側の警告
-            }
-
-            if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
-            {
-                warningPresenter.WarningModel.WarningLevel.Value = 2; // 中間の警告
-            }
-
-            if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
-            {
-                warningPresenter.WarningModel.WarningLevel.Value = 3; // 内側の警告
-            }
-            if (fatalCollisionComponent != null && fatalCollisionComponent.GetIsHit())
-            {
-                warningPresenter.WarningModel.WarningLevel.Value = 4; // 致命的な衝突
-            }
+            warningPresenter.WarningModel.WarningLevel.Value = 1;
+        }
+        else
+        {
+            // 警告レベル1が解除された場合、レベルを0に戻す
+            warningPresenter.WarningModel.WarningLevel.Value = 5;
         }
     }
+
+    public void ObserveWarningLevel2(bool isHit)
+    {
+        if (isHit)
+        {
+            warningPresenter.WarningModel.WarningLevel.Value = 2;
+        }
+        else
+        {
+            // 警告レベル2が解除された場合、レベルを1に戻す
+            warningPresenter.WarningModel.WarningLevel.Value = 1;
+        }
+    }
+    public void ObserveWarningLevel3(bool isHit)
+    {
+        if (isHit)
+        {
+            warningPresenter.WarningModel.WarningLevel.Value = 3;
+        }
+        else
+        {
+            // 警告レベル3が解除された場合、レベルを2に戻す
+            warningPresenter.WarningModel.WarningLevel.Value = 2;
+        }
+    }
+
+    public void ObserveWarningLevel4(bool isHit)
+    {
+        if (isHit)
+        {
+            warningPresenter.WarningModel.WarningLevel.Value = 4;
+        }
+        else
+        {
+            // 警告レベル4が解除された場合、レベルを3に戻す
+            warningPresenter.WarningModel.WarningLevel.Value = 3;
+        }
+    }
+
 }

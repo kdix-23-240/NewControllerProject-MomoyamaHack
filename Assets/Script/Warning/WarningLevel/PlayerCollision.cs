@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    private bool isHit = false;
+    private readonly ReactiveProperty<bool> isHit = new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsHit
+    {
+        get { return isHit; }
+    }
 
-    /// <summary>
-    /// 侵入判定
-    /// 衝突したオブジェクトが棒ならば、isHitをtrueにして警告を表示 
-    /// </summary>
-    /// <param name="collision"></param>
     void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == "collisionWarning")
+        {
+            return;
+        }
         Debug.Log("Hit");
         // 衝突相手が「Stick」または「Goal」の場合のみ処理
         if (other.gameObject.CompareTag("Stick") || other.gameObject.CompareTag("Goal"))
         {
             // プレイヤーの回転と移動を禁止
-            isHit = true;
+            isHit.Value = true;
             //GameSystem.Instance.SetCanRotate(false);
             //GameSystem.Instance.SetCanMove(false);
 
@@ -45,10 +49,5 @@ public class PlayerCollision : MonoBehaviour
             //    Debug.Log("Game Over");
             //}
         }
-    }
-
-    public bool GetIsHit()
-    {
-        return isHit;
     }
 }

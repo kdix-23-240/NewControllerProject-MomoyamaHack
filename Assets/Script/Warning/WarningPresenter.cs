@@ -18,7 +18,7 @@ public class WarningPresenter : MonoBehaviour
     }
     private void Bind()
     {
-        warningModel.WarningLevel.Subscribe(level =>
+        warningModel.WarningLevel.Skip(5).Subscribe(level =>
         {
             Debug.Log("WarningPresenter:WarningLevel‚ª•ÏX‚³‚ê‚Ü‚µ‚½");
             Debug.Log($"WarningPresenter:WarningLevel = {level}");
