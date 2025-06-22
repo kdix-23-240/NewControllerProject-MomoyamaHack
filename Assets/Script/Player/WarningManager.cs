@@ -20,9 +20,24 @@ public class WarningManager : MonoBehaviour
 
     private void Awake()
     {
-        outSideWarning = warningParent.transform.Find("OutSideWarning").gameObject;
-        middleWarning = warningParent.transform.Find("MiddleWarning").gameObject;
-        inSideWarning = warningParent.transform.Find("InSideWarning").gameObject;
+        outSideWarning = warningParent.transform.Find("LowLevelWarning").gameObject;
+        middleWarning = warningParent.transform.Find("MiddleLevelWarning").gameObject;
+        inSideWarning = warningParent.transform.Find("HighLevelWarning").gameObject;
+    }
+    private void Start()
+    {
+        if (outSideWarning == null)
+        {
+            Debug.LogError("外側の警告がせっていされていません");
+        }
+        if( middleWarning == null)
+        {
+            Debug.LogError("中間の警告がせっていされていません");
+        }
+        if (inSideWarning == null)
+        {
+            Debug.LogError("内側の警告がせっていされていません");
+        }
     }
     void Update()
     {
