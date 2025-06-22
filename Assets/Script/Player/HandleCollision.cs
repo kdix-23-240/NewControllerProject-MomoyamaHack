@@ -41,7 +41,7 @@ public class HandleCollision : MonoBehaviour
             {
                 Debug.Log("Calling StartWarningSequence()");
                 var warningManager = FindObjectOfType<WarningManager>();
-                warningManager?.StartWarningSequence(); // ← 送信管理はWarningManagerに任せる
+                //warningManager?.StartWarningSequence(); // ← 送信管理はWarningManagerに任せる
                 Debug.Log("Game Over");
             }
         }

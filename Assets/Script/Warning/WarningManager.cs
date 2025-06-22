@@ -9,20 +9,20 @@ using UnityEngine.UI;
 /// </summary>
 public class WarningManager : MonoBehaviour
 {
-    private char warningLevel = '5';
     [SerializeField] private GameObject warningParent;
     private GameObject outSideWarning;
     private GameObject middleWarning;
     private GameObject inSideWarning;
-
-    private Coroutine warningCoroutine;
-    private bool isWarningSequenceRunning = false;
+    private GameObject playerCollision;
+    private WarningPresenter warningPresenter;
 
     private void Awake()
     {
         outSideWarning = warningParent.transform.Find("LowLevelWarning").gameObject;
         middleWarning = warningParent.transform.Find("MiddleLevelWarning").gameObject;
         inSideWarning = warningParent.transform.Find("HighLevelWarning").gameObject;
+        playerCollision = warningParent.transform.Find("PlayerCollision").gameObject;
+        warningPresenter = GetComponent<WarningPresenter>();
     }
     private void Start()
     {
@@ -30,13 +30,17 @@ public class WarningManager : MonoBehaviour
         {
             Debug.LogError("外側の警告がせっていされていません");
         }
-        if( middleWarning == null)
+        if (middleWarning == null)
         {
             Debug.LogError("中間の警告がせっていされていません");
         }
         if (inSideWarning == null)
         {
             Debug.LogError("内側の警告がせっていされていません");
+        }
+        if (playerCollision == null)
+        {
+            Debug.LogError("致命的な衝突の警告がせっていされていません");
         }
     }
     void Update()
@@ -49,62 +53,31 @@ public class WarningManager : MonoBehaviour
     /// </summary>
     private void ObserveWarningLevel()
     {
-        int newLevel = 5;
-
         var outSideWarningComponent = outSideWarning.GetComponent<HandleOutSideWarning>();
         var middleWarningComponent = middleWarning.GetComponent<HandleMiddleWarning>();
         var inSideWarningComponent = inSideWarning.GetComponent<HandleInSideWarning>();
+        var fatalCollisionComponent = playerCollision.GetComponent<PlayerCollision>();
 
         if (GameSystem.Instance.GetCanMove())
         {
             if (outSideWarningComponent != null && outSideWarningComponent.GetIsHit())
-                newLevel = Mathf.Min(newLevel, 3);
+            {
+                warningPresenter.WarningModel.WarningLevel.Value = 1; // 外側の警告
+            }
 
             if (middleWarningComponent != null && middleWarningComponent.GetIsHit())
-                newLevel = Mathf.Min(newLevel, 2);
+            {
+                warningPresenter.WarningModel.WarningLevel.Value = 2; // 中間の警告
+            }
 
             if (inSideWarningComponent != null && inSideWarningComponent.GetIsHit())
-                newLevel = Mathf.Min(newLevel, 1);
-        }
-        warningLevel = (char)newLevel;
-   }
-
-    /// <summary>
-    /// 衝突時などに呼び出し、警告4→5を段階的に送信する
-    /// </summary>
-    public void StartWarningSequence()
-    {
-        if (!isWarningSequenceRunning)
-        {
-            if (warningCoroutine != null)
-                StopCoroutine(warningCoroutine);
-
-            warningCoroutine = StartCoroutine(WarningSequenceCoroutine());
-        }
-    }
-
-    private IEnumerator WarningSequenceCoroutine()
-    {
-        isWarningSequenceRunning = true;
-
-        SendWarning('4');
-        Debug.Log("[WarningManager] Sent '4'");
-
-        yield return new WaitForSeconds(3f);
-
-        SendWarning('5');
-        Debug.Log("[WarningManager] Sent '5'");
-
-        isWarningSequenceRunning = false;
-    }
-
-    private void SendWarning(char levelChar)
-    {
-        if (Get_Information.Instance != null)
-        {
-            Get_Information.Instance.SetOutgoingByte((byte)levelChar);
-            //Debug.Log($"[WarningManager] Sent warning level command: '{levelChar}'");
+            {
+                warningPresenter.WarningModel.WarningLevel.Value = 3; // 内側の警告
+            }
+            if (fatalCollisionComponent != null && fatalCollisionComponent.GetIsHit())
+            {
+                warningPresenter.WarningModel.WarningLevel.Value = 4; // 致命的な衝突
+            }
         }
     }
 }
-

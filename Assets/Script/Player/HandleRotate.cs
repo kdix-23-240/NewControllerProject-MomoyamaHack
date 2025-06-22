@@ -28,7 +28,7 @@ public class HandleRotate : MonoBehaviour
     void Update()
     {
         // 回転が許可されていない場合は処理をスキップ
-        if (!canRotate) return;
+        if (!GameSystem.Instance.GetCanMove()) return;
 
         // Get_Informationが未初期化の場合はスキップ
         if (Get_Information.Instance == null) return;
