@@ -6,9 +6,10 @@ using System.Collections.Generic;
 /// プレイヤーまたはオブジェクトをY軸・Z軸（ピッチ・ヨー）方向に傾けるスクリプト
 /// シリアル通信から得た角度データに基づいて、姿勢を更新する
 /// </summary>
-public class HandleRotateYZ : MonoBehaviour
+public class HandleRotate : MonoBehaviour
 {
     float pitch = 0;               // ピッチ角（上下の傾き）
+    float roll = 0;                // ロール角（左右の傾き）
     float yaw = 0;                 // ヨー角（左右の方向）
     Transform myTransform;        // このオブジェクトのTransform情報
     public bool canRotate = true; // 回転の可否を制御するフラグ
@@ -22,7 +23,7 @@ public class HandleRotateYZ : MonoBehaviour
     }
 
     /// <summary>
-    /// 毎フレーム呼ばれる処理：pitchとyawを取得して姿勢を更新
+    /// 毎フレーム呼ばれる処理：pitchとrollとyawを取得して姿勢を更新
     /// </summary>
     void Update()
     {
@@ -35,6 +36,7 @@ public class HandleRotateYZ : MonoBehaviour
         // シリアルから角度データを取得
         float[] data = Get_Information.Instance.GetReceivedData();
         pitch = data[0]; // ピッチ（上下の傾き）
+        roll = data[1];  // ロール（左右の傾き）
         yaw = data[2];   // ヨー（水平回転）
 
         // 実際にオブジェクトの姿勢を更新
@@ -48,6 +50,7 @@ public class HandleRotateYZ : MonoBehaviour
     {
         Vector3 worldAngle = myTransform.localEulerAngles; // 現在の回転角度を取得
         worldAngle.x = -pitch;                             // ピッチは符号反転（視覚補正）
+        worldAngle.z = roll;                               // ロールはそのまま反映（左右の傾き）
         worldAngle.y = yaw;                                // ヨーはそのまま反映
         myTransform.localEulerAngles = worldAngle;         // 回転を適用
     }

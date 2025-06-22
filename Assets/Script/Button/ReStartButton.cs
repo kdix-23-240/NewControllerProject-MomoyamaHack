@@ -68,26 +68,15 @@ public class ReStartButton : MonoBehaviour
             return;
         }
 
-        // X回転（HandleRotateX）を再び有効にする
-        var rotateX = player.GetComponent<HandleRotateX>();
-        if (rotateX != null)
+        // 回転（HandleRotate）を再び有効にする
+        var rotate = player.transform.root.GetComponent<HandleRotate>();
+        if (rotate != null)
         {
-            rotateX.canRotate = true;
+            rotate.canRotate = true;
         }
         else
         {
-            Debug.LogWarning("HandleRotateX が " + player.name + " に見つかりません");
-        }
-
-        // YZ回転（HandleRotateYZ）を再び有効にする（親オブジェクト側に存在）
-        var rotateYZ = player.transform.root.GetComponent<HandleRotateYZ>();
-        if (rotateYZ != null)
-        {
-            rotateYZ.canRotate = true;
-        }
-        else
-        {
-            Debug.LogWarning("HandleRotateYZ が Player に見つかりません");
+            Debug.LogWarning("HandleRotate が Player に見つかりません");
         }
     }
 }

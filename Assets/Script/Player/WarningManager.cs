@@ -10,13 +10,20 @@ using UnityEngine.UI;
 public class WarningManager : MonoBehaviour
 {
     private char warningLevel = '5';
-
-    [SerializeField] private GameObject outSideWarning;
-    [SerializeField] private GameObject middleWarning;
-    [SerializeField] private GameObject inSideWarning;
+    [SerializeField] private GameObject warningParent;
+    private GameObject outSideWarning;
+    private GameObject middleWarning;
+    private GameObject inSideWarning;
 
     private Coroutine warningCoroutine;
     private bool isWarningSequenceRunning = false;
+
+    private void Awake()
+    {
+        outSideWarning = warningParent.transform.Find("OutSideWarning").gameObject;
+        middleWarning = warningParent.transform.Find("MiddleWarning").gameObject;
+        inSideWarning = warningParent.transform.Find("InSideWarning").gameObject;
+    }
     void Update()
     {
         ObserveWarningLevel();
