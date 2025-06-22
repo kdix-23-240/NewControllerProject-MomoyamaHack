@@ -5,21 +5,22 @@ using UnityEngine;
 public class HandleOutSideWarning : MonoBehaviour
 {
     private bool isHit = false;
-    void OnTriggerEnter(Collider collision)
+
+    void OnCollisionEnter(Collision other)
     {
-        Debug.Log("[OutSide] Enter" );
+        Debug.Log("[OutSide] Enter");
         // 衝突したオブジェクトの名前をログに表示
-        if (collision.gameObject.tag == "Stick")
+        if (other.gameObject.tag == "Stick")
         {
             isHit = true;
         }
     }
 
-    void OnTriggerExit(Collider collision)
+    void OnCollisionExit(Collision other)
     {
-        Debug.Log("[OutSide] Exit" );
+        Debug.Log("[OutSide] Exit");
         // 衝突したオブジェクトの名前をログに表示
-        if (collision.gameObject.tag == "Stick")
+        if (other.gameObject.tag == "Stick")
         {
             isHit = false;
         }

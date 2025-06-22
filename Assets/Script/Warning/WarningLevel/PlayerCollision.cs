@@ -11,11 +11,11 @@ public class PlayerCollision : MonoBehaviour
     /// 衝突したオブジェクトが棒ならば、isHitをtrueにして警告を表示 
     /// </summary>
     /// <param name="collision"></param>
-    void OnTriggerEnter(Collider collision)
+    void OnCollisionEnter(Collision other)
     {
         Debug.Log("Hit");
         // 衝突相手が「Stick」または「Goal」の場合のみ処理
-        if (collision.gameObject.CompareTag("Stick") || collision.gameObject.CompareTag("Goal"))
+        if (other.gameObject.CompareTag("Stick") || other.gameObject.CompareTag("Goal"))
         {
             // プレイヤーの回転と移動を禁止
             isHit = true;
