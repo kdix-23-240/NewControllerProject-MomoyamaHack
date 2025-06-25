@@ -27,7 +27,7 @@ public class WarningManager : MonoBehaviour
     {
         if (isHit)
         {
-            warningPresenter.WarningModel.WarningLevel.Value = 1;
+            warningPresenter.WarningModel.WarningLevel.Value = 3;
         }
         else
         {
@@ -45,14 +45,14 @@ public class WarningManager : MonoBehaviour
         else
         {
             // 警告レベル2が解除された場合、レベルを1に戻す
-            warningPresenter.WarningModel.WarningLevel.Value = 1;
+            warningPresenter.WarningModel.WarningLevel.Value = 3;
         }
     }
     public void ObserveWarningLevel3(bool isHit)
     {
         if (isHit)
         {
-            warningPresenter.WarningModel.WarningLevel.Value = 3;
+            warningPresenter.WarningModel.WarningLevel.Value = 1;
         }
         else
         {
@@ -70,7 +70,7 @@ public class WarningManager : MonoBehaviour
         else
         {
             // 警告レベル4が解除された場合、レベルを3に戻す
-            warningPresenter.WarningModel.WarningLevel.Value = 3;
+            warningPresenter.WarningModel.WarningLevel.Value = 1;
         }
     }
 

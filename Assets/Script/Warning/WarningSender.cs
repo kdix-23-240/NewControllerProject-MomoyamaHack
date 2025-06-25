@@ -14,8 +14,8 @@ public class WarningSender : MonoBehaviour
         {
             case 1:
                 Debug.Log("---------------------------------------------------");
-                Debug.Log("WarningSender:WarningLevel1 を検出");
-                Debug.Log("WarningSender:棒に少し近づきました");
+                Debug.Log("WarningSender:WarningLevel3 を検出");
+                Debug.Log("WarningSender:棒に近づきすぎです、立て直してください");
                 Debug.Log("---------------------------------------------------");
                 SendWarning('1');
                 break;
@@ -28,8 +28,8 @@ public class WarningSender : MonoBehaviour
                 break;
             case 3:
                 Debug.Log("---------------------------------------------------");
-                Debug.Log("WarningSender:WarningLevel3 を検出");
-                Debug.Log("WarningSender:棒に近づきすぎです、立て直してください");
+                Debug.Log("WarningSender:WarningLevel1 を検出");
+                Debug.Log("WarningSender:棒に少し近づきました");
                 Debug.Log("---------------------------------------------------");
                 SendWarning('3');
                 break;
