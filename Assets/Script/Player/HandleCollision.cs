@@ -22,21 +22,13 @@ public class HandleCollision : MonoBehaviour
             GameSystem.Instance.SetCanRotate(false);
             GameSystem.Instance.SetCanMove(false);
 
-            // X軸回転スクリプトを無効化
-            var rotateX = GetComponent<HandleRotateX>();
-            if (rotateX != null)
-            {
-                rotateX.canRotate = false;
-                Debug.Log("[HandleCollision] X回転停止");
-            }
-
-            // 親オブジェクトから YZ軸回転スクリプトも無効化
+            // 回転スクリプトを無効化
             var playerObj = transform.root;
-            var rotateYZ = playerObj.GetComponent<HandleRotateYZ>();
-            if (rotateYZ != null)
+            var rotate = playerObj.GetComponent<HandleRotate>();
+            if (rotate != null)
             {
-                rotateYZ.canRotate = false;
-                Debug.Log("[HandleCollision] YZ回転停止（Player経由）");
+                rotate.canRotate = false;
+                Debug.Log("[HandleCollision] 回転停止（Player経由）");
             }
 
             // 該当のモーダル（biribiriModal または goalModal）をCanvas下に表示
@@ -49,7 +41,7 @@ public class HandleCollision : MonoBehaviour
             {
                 Debug.Log("Calling StartWarningSequence()");
                 var warningManager = FindObjectOfType<WarningManager>();
-                warningManager?.StartWarningSequence(); // ← 送信管理はWarningManagerに任せる
+                //warningManager?.StartWarningSequence(); // ← 送信管理はWarningManagerに任せる
                 Debug.Log("Game Over");
             }
         }
