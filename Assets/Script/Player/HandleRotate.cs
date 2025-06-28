@@ -13,6 +13,9 @@ public class HandleRotate : MonoBehaviour
     float yaw = 0;                 // ヨー角（左右の方向）
     Transform myTransform;        // このオブジェクトのTransform情報
     public bool canRotate = true; // 回転の可否を制御するフラグ
+    [SerializeField] private float offsetRotateX = 0f; // ピッチのオフセット（視覚補正用）
+    [SerializeField] private float offsetRotateY = 0f; // ヨーのオフセット（視覚補正用）
+    [SerializeField] private float offsetRotateZ = 0f; // ロールのオフセット（視覚補正用）
 
     /// <summary>
     /// 初期化処理：Transform取得
@@ -49,9 +52,9 @@ public class HandleRotate : MonoBehaviour
     private void LimitRotate()
     {
         Vector3 worldAngle = myTransform.localEulerAngles; // 現在の回転角度を取得
-        worldAngle.x = -pitch;                             // ピッチは符号反転（視覚補正）
-        worldAngle.z = roll;                               // ロールはそのまま反映（左右の傾き）
-        worldAngle.y = yaw;                                // ヨーはそのまま反映
+        worldAngle.x = -pitch - offsetRotateX;                             // ピッチは符号反転（視覚補正）
+        worldAngle.z = roll + offsetRotateZ;                               // ロールはそのまま反映（左右の傾き）
+        worldAngle.y = yaw + offsetRotateY;                                // ヨーはそのまま反映
         myTransform.localEulerAngles = worldAngle;         // 回転を適用
     }
 }
