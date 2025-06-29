@@ -8,6 +8,7 @@ public class StageSelect : MonoBehaviour
     private bool isGrip = false; 
     [SerializeField] private float selectTime = 1f; // ステージ選択のための時間閾値
     private float flameCounter = 0f; // フレームカウンター
+    private string stageName = null; // ステージ名を格納する変数
 
     void Awake()
     {
@@ -89,7 +90,9 @@ public class StageSelect : MonoBehaviour
     {
         // シーンを変更する処理をここに実装
         Debug.Log("シーンを変更: " + stageNum);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Stage" + stageNum.ToString());
+        stageName = "Stage" + stageNum.ToString(); // ステージ名を設定
+        GriConDirectionSetting.stageName = stageName; // GriConDirectionSettingにステージ名を渡す
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GriConSetting");
     }
 
     private bool CheckGrip()
