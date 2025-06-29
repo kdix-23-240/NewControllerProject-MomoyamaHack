@@ -7,8 +7,6 @@ public class GriConDirectionSetting : MonoBehaviour
     private bool isSet2 = false; // 2方向目の設定が完了したかどうか
     private bool isSet3 = false; // 3方向目の設定が完了したかどうか
     private bool isSet4 = false; // 4方向目の設定が完了したかどうか
-    private bool isSet5 = false; // 5方向目の設定が完了したかどうか
-    private bool isSet6 = false; // 6方向目の設定が完了したかどうか
     private float flameCounter = 0f; // フレームカウンター
     [SerializeField] private float selectTime = 2f; // ステージ選択のための時間閾値
     public static string stageName = null; // ステージ名
@@ -69,8 +67,6 @@ public class GriConDirectionSetting : MonoBehaviour
                     case 1: isSet2 = true; break;
                     case 2: isSet3 = true; break;
                     case 3: isSet4 = true; break;
-                    case 4: isSet5 = true; break;
-                    case 5: isSet6 = true; break;
                 }
             }
             else
@@ -82,8 +78,6 @@ public class GriConDirectionSetting : MonoBehaviour
                     case 1: isSet2 = false; break;
                     case 2: isSet3 = false; break;
                     case 3: isSet4 = false; break;
-                    case 4: isSet5 = false; break;
-                    case 5: isSet6 = false; break;
                 }
             }
         }
@@ -91,7 +85,7 @@ public class GriConDirectionSetting : MonoBehaviour
 
     private bool CheckIsAllSet()
     {
-        if(isSet1 && isSet2 && isSet3 && isSet4 && isSet5 && isSet6)
+        if(isSet1 && isSet2 && isSet3 && isSet4)
         {
             Debug.Log("全方向の設定が完了しました。");
             return true;
