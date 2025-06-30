@@ -3,38 +3,24 @@ using UnityEngine;
 public class StageSelect : MonoBehaviour
 {
     [SerializeField] private Camera stageSelectCamera;
-    private float bend; // 曲げセンサーの値を格納する変数
     [SerializeField] private float bendWall = 4f; // 曲げセンサーの閾値
     private bool isGrip = false; 
     [SerializeField] private float selectTime = 1f; // ステージ選択のための時間閾値
     private float flameCounter = 0f; // フレームカウンター
     private string stageName = null; // ステージ名を格納する変数
+    private TimerModel timerModel; // TimerModelのインスタンス
 
     void Awake()
     {
-
+        timerModel = new TimerModel(); // TimerModelのインスタンスを生成
     }
 
     private void Start()
     {
-
     }
 
     void Update()
     {
-        float[] data = Get_Information.Instance.GetReceivedData();
-        bend = data[3];
-        if (bendWall < bend)
-        {
-            isGrip = true;
-            flameCounter += Time.deltaTime; // フレームカウンターを更新
-        }
-        else
-        {
-            isGrip = false;
-            flameCounter = 0f; // 握っていない場合はカウンターをリセット
-        }
-
         if (CheckGrip())
         {
 
